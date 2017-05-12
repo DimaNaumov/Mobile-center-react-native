@@ -9,7 +9,11 @@ import {
 } from 'react-native';
 import * as simpleAuthProviders from 'react-native-simple-auth';
 
+import SelfAnalytics from './analytics';
+import SelfCrashes from './crashes';
+
 import * as CONST from './const';
+
 const configs = {
   facebook: {
         appId: '1945815635652325',
@@ -59,6 +63,9 @@ class Login extends Component {
     this.setState({
       loading: true
     });
+    
+    const analytics = new SelfAnalytics();
+    const crash = new SelfCrashes();
     simpleAuthProviders[provider](opts)
       .then((info) => {
         //DoMethod(info)
@@ -66,12 +73,12 @@ class Login extends Component {
             Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
           console.log('!!!!');
           console.log(info.user);
+          
           user = {
             name: info.user.first_name + ' ' + info.user.last_name,
             photoUrl: info.user.picture.data.url
           };
-
-          
+          analytics.track('fb_login');
         } else if(provider == 'twitter'){
             Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
           console.log('!!!!');
@@ -80,7 +87,9 @@ class Login extends Component {
             name: info.user.name,
             photoUrl: info.user.profile_image_url
           };
+          analytics.track('tw_login');
         }
+        analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
         redirection(CONST.HOME_SCREEN);  
       })
       .catch((error) => {
@@ -88,6 +97,7 @@ class Login extends Component {
           'Authorize Error',
           error.message
         );
+       analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'false'});
        redirection(CONST.LOGIN2_SCREEN);
       });
   }

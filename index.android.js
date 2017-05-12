@@ -9,9 +9,9 @@ import {
 } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import SvgUri from 'react-native-svg-uri';
-
 import AuthorizationComponent from './app/auth';
 import * as CONST from './app/const';
+import Chart from './app/chart'
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -126,7 +126,26 @@ class StepsScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+        <Chart data={[
+          [{
+            "date": 0,
+            "value": 0
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 1000
+          }]
+        ]}/>
+        {/*<Chart data={}/>*/}
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Steps</Text>
       </View>
     );
