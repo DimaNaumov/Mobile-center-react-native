@@ -10,6 +10,7 @@ import { StockLine } from 'react-native-pathjs-charts'
 import moment from 'moment'
 import SvgUri from 'react-native-svg-uri';
 import { SmoothLine } from 'react-native-pathjs-charts'
+import * as LocalStorage from './storage';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,28 +25,33 @@ export default class Charts extends Component {
  
   constructor (props){
     super(props)
-    if(props.data !== undefined){
-      this.data = props.data;
-    }
+   //this.dataSetName = props.dataSetName;
+    // if(props.dataSetName !== undefined){
+    //   this.setState( {dataSetName: props.dataSetName});
+    // }
+    // if(props.data !== undefined){
+    //   this.data = props.data;
+    // }
   }
-   data = [
-      // [{
-      //   "date": 0,
-      //   "value": 0
-      // }, {
-      //   "date": 1,
-      //   "value": 1000
-      // }, {
-      //   "date": 2,
-      //   "value": 1500
-      // }, {
-      //   "date": 3,
-      //   "value": 500
-      // }, {
-      //   "date": 4,
-      //   "value": 1000
-      // }]
-    ]
+  //dataSetName = 'stepsData'
+  //  data = [
+  //     // [{
+  //     //   "date": 0,
+  //     //   "value": 0
+  //     // }, {
+  //     //   "date": 1,
+  //     //   "value": 1000
+  //     // }, {
+  //     //   "date": 2,
+  //     //   "value": 1500
+  //     // }, {
+  //     //   "date": 3,
+  //     //   "value": 500
+  //     // }, {
+  //     //   "date": 4,
+  //     //   "value": 1000
+  //     // }]
+  //   ]
    
      options = {
       width: 350,
@@ -106,14 +112,16 @@ export default class Charts extends Component {
         }
       }
     }
-
+//прямо в data сделать привязку к shared dataStorage
   render() {
     return (
       <View style={styles.container}>
          <Text>
           DAILY STATISTICS
         </Text>
-        <StockLine data={this.data} options={this.options} xKey='date' yKey='value' />
+        <StockLine data={LocalStorage.Storage.get(this.props.dataSetName)} options={this.options} xKey='date' yKey='value' />
+        {/*<StockLine data={LocalStorage.Storage.get(this.dataSetName)} options={this.options} xKey='date' yKey='value' />*/}
+        {/*<StockLine data={this.data} options={this.options} xKey='date' yKey='value' />*/}
       </View>
     )
   }

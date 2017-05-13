@@ -143,7 +143,8 @@ class StepsScreen extends React.Component {
           }]
         ]
   onReDraw(el){
-    this.stepsData= [
+    temp = LocalStorage.Storage.get('stepsData');
+    stepsData= [
           [{
             "date": 0,
             "value": 0
@@ -161,16 +162,19 @@ class StepsScreen extends React.Component {
             "value": 2000
           }]
         ]
+    LocalStorage.Storage.set('stepsData', stepsData);
+    // this.state = {loading:false};
   }
   render() {
     LocalStorage.Storage.set('stepsData', this.stepsData);
+    //TODO: вынести stepsData в константу
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Chart  data={LocalStorage.Storage.get('stepsData')} />
+        <Chart dataSetName={'stepsData'} />
         {/*<Chart data={}/>*/}
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
-        <Button title='ReDraw 'onPress={this.onReDraw}/>
+        <Button title='ReDraw' onPress={this.onReDraw}/>
         <Text>Steps</Text>
       </View>
     );
@@ -185,7 +189,8 @@ class CalScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+         <Chart dataSetName={'stepsData'} />
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Calories</Text>
       </View>
     );
@@ -200,7 +205,8 @@ class DistanceScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+         <Chart dataSetName={'stepsData'} />
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Distance</Text>
       </View>
     );
@@ -215,7 +221,8 @@ class TimeScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+         <Chart dataSetName={'stepsData'} />
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Time</Text>
       </View>
     );
