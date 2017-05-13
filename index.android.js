@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import { StackNavigator, TabNavigator } from 'react-navigation';
 import SvgUri from 'react-native-svg-uri';
-
 import AuthorizationComponent from './app/auth';
 import * as CONST from './app/const';
-import DataProvider from './app/dataProvider';
+import Chart from './app/chart'
+import * as LocalStorage from './app/storage';
+import * as DataProvider from './app/dataProvider';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -126,11 +127,57 @@ class StepsScreen extends React.Component {
   static navigationOptions = {
     title: 'Steps ',
   };
+  stepsData = [
+          [{
+            "date": 0,
+            "value": 250
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 1000
+          }]
+        ]
+  onReDraw(el){
+    temp = LocalStorage.Storage.get('stepsData');
+    stepsData= [
+          [{
+            "date": 0,
+            "value": 0
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 2000
+          }]
+        ]
+    LocalStorage.Storage.set('stepsData', stepsData);
+    // this.state = {loading:false};
+  }
   render() {
+    LocalStorage.Storage.set('stepsData', this.stepsData);
+    //TODO: вынести stepsData в константу
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+        <Chart dataSetName={'stepsData'} />
+        {/*<Chart data={}/>*/}
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
+        <Button title='ReDraw' onPress={this.onReDraw}/>
         <Text>Steps</Text>
       </View>
     );
@@ -145,7 +192,8 @@ class CalScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+         <Chart dataSetName={'stepsData'} />
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Calories</Text>
         <Button
           onPress={() => this.props.navigation.navigate('Crash')}
@@ -168,7 +216,8 @@ class DistanceScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+         <Chart dataSetName={'stepsData'} />
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Distance</Text>
       </View>
     );
@@ -183,7 +232,8 @@ class TimeScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+         <Chart dataSetName={'stepsData'} />
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Text>Time</Text>
       </View>
     );
