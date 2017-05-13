@@ -13,26 +13,34 @@ class DataProvider {
   }
 
   getFitnessDataForFiveDays() {
-    if (LocalStorage.Storage.get('fitnessData') == undefined) {
-      if (Platform.OS === CONST.PLATFORM_IOS) {
+    try {
+      if (LocalStorage.Storage.get('fitnessData') == undefined) {
+        if (Platform.OS === CONST.PLATFORM_IOS) {
 
-      } else 
-      if (Platform.OS === CONST.PLATFORM_ANDROID) {
-          //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
-          GoogleFitService.onAuthorize((res) => {
-              console.log(res);
-          });
-          GoogleFitService.authorize();
-        
-          GoogleFitService.getFiveDaysData(function(d) {
-              LocalStorage.Storage.set('fitnessData', d);
-              console.log(d);
-              return d;
-          });
+        } else 
+        if (Platform.OS === CONST.PLATFORM_ANDROID) {
+            //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
+          
+            GoogleFitService.onAuthorize((res) => {
+                console.log(res);
+            });
+            GoogleFitService.authorize();
+          
+            GoogleFitService.getFiveDaysData(function(d) {
+                LocalStorage.Storage.set('fitnessData', d);
+                console.log('Google Fit statistic: ',d);
+                return d;
+            });
+          
+        }
       }
-    }
-    else {
-      return LocalStorage.Storage.get('fitnessData');
+      else {
+        let existingData = LocalStorage.Storage.get('fitnessData');
+        console.log('Google Fit statistic from globalStore: ', existingData);
+        return existingData;
+      }
+    } catch (e) {
+        console.log(e);
     }
   }
 

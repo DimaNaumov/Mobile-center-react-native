@@ -11,6 +11,8 @@ import * as simpleAuthProviders from 'react-native-simple-auth';
 import PermissionService from './permissionService';
 
 import * as CONST from './const';
+import DataProvider from './dataProvider';
+
 const configs = {
   facebook: {
         appId: '1945815635652325',
@@ -82,7 +84,8 @@ class Login extends Component {
             photoUrl: info.user.profile_image_url
           };
         }
-        PermissionService.requestLocationPermission();
+PermissionService.requestLocationPermission();
+//   DataProvider.getFitnessDataForFiveDays();
         redirection(CONST.HOME_SCREEN);  
       })
       .catch((error) => {
@@ -108,7 +111,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor:'transparent'
   },
   welcome: {
     fontSize: 20,

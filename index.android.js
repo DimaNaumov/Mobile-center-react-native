@@ -12,6 +12,7 @@ import SvgUri from 'react-native-svg-uri';
 
 import AuthorizationComponent from './app/auth';
 import * as CONST from './app/const';
+import DataProvider from './app/dataProvider';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -20,8 +21,10 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.home}>
-        <Image source={require('./images/VSMC.png')}/>
+        <Image  source={require('./images/vsmc.png')}/>
         <Image source={require('./images/photo.png')}/>
+        <Image style={{width: 50, height: 50}} source={{uri: 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'}}/>
+        
         <Text>HI, RICK WALLACE!</Text>
         <Text> </Text>
         <Text>TODAY'S STEPS:</Text>
@@ -34,19 +37,19 @@ class HomeScreen extends React.Component {
 
         <View style={styles.home_description}>
           <View style={styles.home_description_cell}>
-            <View><Image source={require('./images/cal.png')}/></View>
+            <View><Image style={styles.home_description_cell_img} source={require('./images/cal.png')}/></View>
             <View><Text>CALORIES</Text></View>
             <View><Text>500</Text></View>
           </View>
           <Text>|</Text>
           <View style={styles.home_description_cell}>
-            <View><Image source={require('./images/distance.png')}/></View>
+            <View><Image style={styles.home_description_cell_img} source={require('./images/distance.png')}/></View>
             <View><Text>DISTANCE</Text></View>
             <View><Text>7.4 Km</Text></View>
           </View>
           <Text>|</Text>
           <View style={styles.home_description_cell}>
-            <View><Image source={require('./images/time.png')}/></View>
+            <View><Image style={styles.home_description_cell_img} source={require('./images/time.png')}/></View>
             <View><Text>ACTIVE TIME</Text></View>
             <View><Text>1h34m</Text></View>
           </View>
@@ -96,10 +99,11 @@ class LoginScreen extends React.Component {
   };
   render() {
     return (
-      <View style={styles.container}>
-        <Text>Login page</Text>
+      <Image style={styles.login_container} source={require('./images/login_background.png')}>
+        <Image  source={require('./images/vsmc.png')}/>
+        <Image  source={require('./images/login_logo.png')}/>
         <AuthorizationComponent redirect={this.props.navigation.navigate}/>
-      </View>
+      </Image>
     );
   }
 }
@@ -143,6 +147,14 @@ class CalScreen extends React.Component {
         <Text>DAILY STATISTICS</Text>
         <Image  width="300" height="300" source={require('./images/graph.png')}/>
         <Text>Calories</Text>
+        <Button
+          onPress={() => this.props.navigation.navigate('Crash')}
+          title="Crash application"
+        />
+        <Button
+          onPress={() => DataProvider.getFitnessDataForFiveDays()}
+          title="Get data"
+        />
       </View>
     );
   }
@@ -216,9 +228,17 @@ const MobileCenterRouter = TabNavigator({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor:'transparent',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+  },
+  login_container: {
+    flex: 1,
+    width: undefined,
+    height: undefined,
+    backgroundColor:'transparent',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   home: {
     flex: 1,
@@ -226,6 +246,9 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+  },
+  home_logo: {
+    width: 400
   },
   home_description: {
     flex: 1,
@@ -238,6 +261,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-around',
     alignItems: 'center',
+  },
+  home_description_cell_img: {
+    height: 40,
+    width: 40
   }
 });
 
