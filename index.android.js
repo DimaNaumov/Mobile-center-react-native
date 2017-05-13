@@ -125,7 +125,11 @@ class CrashScreen extends React.Component {
     return (
       <View style={styles.container}>
         <Image style={styles.error_logo} source={require('./images/error_image.png')}/>
-        <Text>Sorry, something went wrong!</Text>
+        <Text style={{
+          color: 'grey',
+          fontSize: 20,
+        }}>Sorry, something went wrong!
+        </Text>
       </View>
     );
   }
@@ -152,10 +156,10 @@ class Login2Screen extends React.Component {
   };
   render() {
     return (
-     <View style={styles.container}>
+      <Image style={styles.login_container} source={require('./images/login_background.png')}>
         <Image  style={styles.error_logo} source={require('./images/error_image.png')}/>
         <AuthorizationComponent redirect={this.props.navigation.navigate}/>
-      </View>
+      </Image>
     );
   }
 }
@@ -285,7 +289,8 @@ const styles = StyleSheet.create({
     width: undefined,
     height: undefined,
     backgroundColor:'transparent',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
     alignItems: 'center',
   },
   home: {
