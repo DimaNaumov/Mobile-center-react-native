@@ -12,6 +12,8 @@ import SvgUri from 'react-native-svg-uri';
 import AuthorizationComponent from './app/auth';
 import * as CONST from './app/const';
 import Chart from './app/chart'
+import * as LocalStorage from './app/storage';
+import * as DataProvider from './app/dataProvider';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -122,11 +124,26 @@ class StepsScreen extends React.Component {
   static navigationOptions = {
     title: 'Steps ',
   };
-  render() {
-    return (
-     <View style={styles.container}>
-        <Text>DAILY STATISTICS</Text>
-        <Chart data={[
+  stepsData = [
+          [{
+            "date": 0,
+            "value": 250
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 1000
+          }]
+        ]
+  onReDraw(el){
+    this.stepsData= [
           [{
             "date": 0,
             "value": 0
@@ -141,11 +158,19 @@ class StepsScreen extends React.Component {
             "value": 500
           }, {
             "date": 4,
-            "value": 1000
+            "value": 2000
           }]
-        ]}/>
+        ]
+  }
+  render() {
+    LocalStorage.Storage.set('stepsData', this.stepsData);
+    return (
+     <View style={styles.container}>
+        <Text>DAILY STATISTICS</Text>
+        <Chart  data={LocalStorage.Storage.get('stepsData')} />
         {/*<Chart data={}/>*/}
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
+        <Button title='ReDraw 'onPress={this.onReDraw}/>
         <Text>Steps</Text>
       </View>
     );

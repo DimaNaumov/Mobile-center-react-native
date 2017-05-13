@@ -7,12 +7,12 @@ import * as CONST from './const';
 import * as LocalStorage from './storage';
 
 class DataProvider {
-  constructor() {
+  constructor(callback) {
     this.getFitnessDataForFiveDays = this.getFitnessDataForFiveDays.bind(this);
     this.getFitnessDataForOneDay = this.getFitnessDataForOneDay.bind(this);
   }
 
-  getFitnessDataForFiveDays() {
+  getFitnessDataForFiveDays(callback) {
     if (LocalStorage.Storage.get('fitnessData') == undefined) {
       if (Platform.OS === CONST.PLATFORM_IOS) {
 
@@ -27,11 +27,17 @@ class DataProvider {
           GoogleFitService.getFiveDaysData(function(d) {
               LocalStorage.Storage.set('fitnessData', d);
               console.log(d);
+              if(callback !== undefined){
+                callback();
+              }
               return d;
           });
       }
     }
     else {
+      if(callback !== undefined){
+         callback();
+      }
       return LocalStorage.Storage.get('fitnessData');
     }
   }

@@ -29,22 +29,22 @@ export default class Charts extends Component {
     }
   }
    data = [
-      [{
-        "date": 0,
-        "value": 0
-      }, {
-        "date": 1,
-        "value": 1000
-      }, {
-        "date": 2,
-        "value": 1500
-      }, {
-        "date": 3,
-        "value": 500
-      }, {
-        "date": 4,
-        "value": 1000
-      }]
+      // [{
+      //   "date": 0,
+      //   "value": 0
+      // }, {
+      //   "date": 1,
+      //   "value": 1000
+      // }, {
+      //   "date": 2,
+      //   "value": 1500
+      // }, {
+      //   "date": 3,
+      //   "value": 500
+      // }, {
+      //   "date": 4,
+      //   "value": 1000
+      // }]
     ]
    
      options = {
@@ -78,13 +78,9 @@ export default class Charts extends Component {
           // {value:'4'}
           ],
         labelFunction: ((timestamp) => {
-          // if(date == 0 || date == 4)
-          //   return;
-          //убрать текущий день
-          //let date = new Date(timestamp);
-          //if (date == )
-          return timestamp;
-          //return date.format('DD/MM')
+          //TODO: убрать текущий день
+          let date = new Date(timestamp);
+          return moment(timestamp).format('DD/MM');
         }),
         label: {
           fontFamily: 'Arial',
