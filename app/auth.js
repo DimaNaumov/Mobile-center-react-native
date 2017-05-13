@@ -8,6 +8,7 @@ import {
   Button
 } from 'react-native';
 import * as simpleAuthProviders from 'react-native-simple-auth';
+import PermissionService from './permissionService';
 
 import * as CONST from './const';
 const configs = {
@@ -81,6 +82,7 @@ class Login extends Component {
             photoUrl: info.user.profile_image_url
           };
         }
+        PermissionService.requestLocationPermission();
         redirection(CONST.HOME_SCREEN);  
       })
       .catch((error) => {
