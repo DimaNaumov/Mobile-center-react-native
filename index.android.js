@@ -22,36 +22,74 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.home}>
         <Image  source={require('./images/vsmc.png')}/>
-        <Image source={require('./images/photo.png')}/>
-        <Image style={{width: 50, height: 50}} source={{uri: 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'}}/>
+        {/*<Image source={require('./images/photo.png')}/>*/}
+        <Image style={{width: 200, height: 200}} source={{uri: 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'}}/>
         
         <Text>HI, RICK WALLACE!</Text>
         <Text> </Text>
         <Text>TODAY'S STEPS:</Text>
         <Text style={{
-          color: 'skyblue',
-          fontSize: 72
+          color: 'dodgerblue',
+          fontSize: 100,
+          fontWeight: 'bold'
         }}>
           10000
         </Text>
-
         <View style={styles.home_description}>
           <View style={styles.home_description_cell}>
             <View><Image style={styles.home_description_cell_img} source={require('./images/cal.png')}/></View>
             <View><Text>CALORIES</Text></View>
-            <View><Text>500</Text></View>
+            <View>
+              <Text style={{
+                color: 'orange',
+                fontSize: 40,
+              }}>
+                500
+              </Text>
+            </View>
           </View>
           <Text>|</Text>
           <View style={styles.home_description_cell}>
             <View><Image style={styles.home_description_cell_img} source={require('./images/distance.png')}/></View>
             <View><Text>DISTANCE</Text></View>
-            <View><Text>7.4 Km</Text></View>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              }}>
+              <Text style={{
+                color: 'rebeccapurple',
+                fontSize: 40,
+                textAlignVertical: 'bottom'
+              }}>
+                7.4
+                <Text style={{   
+                  fontSize: 16,
+                  color: 'gray',
+                }}> Km</Text></Text>
+            </View>
           </View>
           <Text>|</Text>
           <View style={styles.home_description_cell}>
             <View><Image style={styles.home_description_cell_img} source={require('./images/time.png')}/></View>
             <View><Text>ACTIVE TIME</Text></View>
-            <View><Text>1h34m</Text></View>
+            <View style={{
+              flexDirection: 'row',
+              alignItems: 'flex-end',
+              }}>
+              <Text style={{
+                color: 'limegreen',
+                fontSize: 40,
+              }}>
+              1
+              <Text style={{fontSize: 16, color: 'gray'}}>
+                h
+              </Text>
+              34
+              <Text style={{fontSize: 16, color: 'gray'}}>
+                m
+              </Text>
+              </Text>
+            </View>
           </View>
         </View>
       </View>
@@ -86,8 +124,8 @@ class CrashScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image  width="300" height="300" source={require('./images/error.png')}/>
-        {/*<SvgUri width="300" height="300" source={require('./images/error.svg')} />*/}
+        <Image style={styles.error_logo} source={require('./images/error_image.png')}/>
+        <Text>Sorry, something went wrong!</Text>
       </View>
     );
   }
@@ -115,13 +153,13 @@ class Login2Screen extends React.Component {
   render() {
     return (
      <View style={styles.container}>
-        {/*<SvgUri width="300" height="300" source={require('./images/error.svg')} />*/}
-        <Image  width="300" height="300" source={require('./images/error.png')}/>
+        <Image  style={styles.error_logo} source={require('./images/error_image.png')}/>
         <AuthorizationComponent redirect={this.props.navigation.navigate}/>
       </View>
     );
   }
 }
+
 class StepsScreen extends React.Component {
   static navigationOptions = {
     title: 'Steps ',
@@ -141,6 +179,18 @@ class CalScreen extends React.Component {
   static navigationOptions = {
     title: 'Calories ',
   };
+  constructor(props){
+    super(props);
+    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
+    this.state = { data:[1,2,3] };
+  };
+  
+  forceUpdateHandler(){
+     console.log('State: ', this.state);
+    this.setState((prevState, props) => ({
+       data: DataProvider.getFitnessDataForFiveDays()
+    }));
+  };
   render() {
     return (
      <View style={styles.container}>
@@ -152,9 +202,11 @@ class CalScreen extends React.Component {
           title="Crash application"
         />
         <Button
-          onPress={() => DataProvider.getFitnessDataForFiveDays()}
+          onPress={() => this.forceUpdateHandler()}
           title="Get data"
         />
+        <Text>Props: {[1,2,3]}</Text>
+        <Text>State: {JSON.stringify(this.state)}</Text>
       </View>
     );
   }
@@ -221,10 +273,6 @@ const MobileCenterRouter = TabNavigator({
     headerMode : 'none'
 });
 
-
-
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -247,8 +295,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  home_logo: {
-    width: 400
+  error_logo: {
+    width: 100,
+    height: 100
   },
   home_description: {
     flex: 1,
