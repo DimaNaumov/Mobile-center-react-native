@@ -8,11 +8,12 @@ import {
   Button
 } from 'react-native';
 import * as simpleAuthProviders from 'react-native-simple-auth';
-
+import PermissionService from './permissionService';
 import SelfAnalytics from './analytics';
 import SelfCrashes from './crashes';
-
 import * as CONST from './const';
+import DataProvider from './dataProvider';
+
 
 const configs = {
   facebook: {
@@ -90,7 +91,12 @@ class Login extends Component {
           };
           analytics.track('tw_login');
         }
+
         analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
+
+		PermissionService.requestLocationPermission();
+		//   DataProvider.getFitnessDataForFiveDays();
+
         redirection(CONST.HOME_SCREEN);  
       })
       .catch((error) => {
@@ -117,7 +123,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor:'transparent'
   },
   welcome: {
     fontSize: 20,

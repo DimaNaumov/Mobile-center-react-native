@@ -1,5 +1,5 @@
-export var Storage = (function () {
-    var store = {};
+export let Storage = (function () {
+    let store = {};
 
 	class StorageInner {
         constructor() {
