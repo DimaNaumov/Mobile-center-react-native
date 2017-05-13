@@ -7,6 +7,7 @@ import {
   View,
   Button
 } from 'react-native';
+import RoundedButton from './roundedButton';
 import * as simpleAuthProviders from 'react-native-simple-auth';
 import PermissionService from './permissionService';
 
@@ -42,15 +43,19 @@ class Login extends Component {
           Welcome to MobileCenterAndroidDemo!
         </Text>
         
-       <Button
-         onPress={this.onBtnPressed.bind(this,'facebook', configs['facebook'])} 
-         title = 'LOGIN VIA FACEBOOK'>
-        </Button>
-        {/*test*/}
-        <Button
-          onPress = {this.onBtnPressed.bind(this,'twitter', configs['twitter'])}
-          title = 'LOGIN VIA TW'>
-        </Button>
+        <RoundedButton 
+          onPress={this.onBtnPressed.bind(this,'facebook', configs['facebook'])}
+          title='LOGIN VIA FACEBOOK'
+          img={require('../images/login_facebook.png')}
+          backgroundColor="#3b5998"
+          />
+
+        <RoundedButton 
+          onPress={this.onBtnPressed.bind(this,'twitter', configs['twitter'])}
+          title='LOGIN VIA TWITTER'
+          img={require('../images/login_twitter.png')}
+          backgroundColor="#48BBEC"
+          marginTop={20}/>
       </View>
     )
   }
@@ -137,11 +142,5 @@ const styles = StyleSheet.create({
   },
   google: {
     backgroundColor: '#ccc'
-  },
-  facebook: {
-    backgroundColor: '#3b5998'
-  },
-  twitter: {
-    backgroundColor: '#48BBEC'
-  },
+  }
 });
