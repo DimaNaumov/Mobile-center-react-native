@@ -68,6 +68,7 @@ class Login extends Component {
     const crash = new SelfCrashes();
     simpleAuthProviders[provider](opts)
       .then((info) => {
+        //analytics.enable();
         //DoMethod(info)
         if(provider == 'facebook'){
             Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);

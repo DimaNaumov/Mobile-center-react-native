@@ -84,7 +84,15 @@ export class SelfAnalytics extends Component {
             return;
         }
         let properties = config.getProps.call(config, prop);
-        Analytics.trackEvent(config.message, properties);
+        Analytics.trackEvent(config.message, properties)
+        .then((info) => {
+            console.log('Analytics sent');
+            console.log(info);
+        })
+        .catch((err)=>{
+            console.log('Analytics sending error');
+            console.log(err);
+        });
     }
 }
 
