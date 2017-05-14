@@ -1,5 +1,10 @@
 export let Storage = (function () {
-    let store = {};
+    let store = {
+        user: {
+                name: '',
+                photoUrl: ''    
+              }
+    };
 
 	class StorageInner {
         constructor() {
@@ -8,8 +13,9 @@ export let Storage = (function () {
         }
 
         set(itemName, newVal) {
+            console.log('Past local store', store);
             store[itemName] = newVal;
-            console.log(store);
+            console.log('New local store', store);
         }
         
         get(itemName) {

@@ -5,27 +5,79 @@ import {
   Text,
   View,
   Button,
-  Image
+  Image,
+  TouchableWithoutFeedback,
+  TouchableOpacity 
 } from 'react-native';
-import { StackNavigator, TabNavigator } from 'react-navigation';
+import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
 import SvgUri from 'react-native-svg-uri';
 
 import AuthorizationComponent from './app/auth';
 import * as CONST from './app/const';
 import DataProvider from './app/dataProvider';
+import * as LocalStorage from './app/storage';
+import Chart from './app/chart'
+import RoundedButton from './app/roundedButton';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
   };
+  stepsData = [
+          [{
+            "date": 0,
+            "value": 250
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 1000
+          }]
+        ];
+
+  onReDraw(el){
+    temp = LocalStorage.Storage.get('stepsData');
+    stepsData= [
+          [{
+            "date": 0,
+            "value": 0
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 2000
+          }]
+        ]
+    LocalStorage.Storage.set('stepsData', stepsData);
+    // this.state = {loading:false};
+  };
+
   render() {
+    LocalStorage.Storage.set('stepsData', this.stepsData);
+    let name = LocalStorage.Storage.get('user').name;
+    let photo = LocalStorage.Storage.get('user').photoUrl; 
     return (
       <View style={styles.home}>
         <Image  source={require('./images/vsmc.png')}/>
-        {/*<Image source={require('./images/photo.png')}/>*/}
-        <Image style={{width: 200, height: 200}} source={{uri: 'http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png'}}/>
-        
-        <Text>HI, RICK WALLACE!</Text>
+        <View style={styles.photo}>
+          <Image style={styles.photo} source={require('./images/photo.png')}/>
+           {/*<Image style={styles.photo} source={{uri: this.photo}}/>*/}
+        </View>
+        <Text>HI, {this.name}</Text>
         <Text> </Text>
         <Text>TODAY'S STEPS:</Text>
         <Text style={{
@@ -92,6 +144,7 @@ class HomeScreen extends React.Component {
             </View>
           </View>
         </View>
+        <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -126,10 +179,13 @@ class CrashScreen extends React.Component {
       <View style={styles.container}>
         <Image style={styles.error_logo} source={require('./images/error_image.png')}/>
         <Text style={{
-          color: 'grey',
-          fontSize: 20,
-        }}>Sorry, something went wrong!
+          color: 'lightgrey',
+          fontSize: 25,
+          textAlign: 'center'
+        }}>
+          ERROR{"\n"}{"\n"}SORRY SOMETHING{"\n"}WENT WRONG!
         </Text>
+        <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -142,8 +198,11 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <Image style={styles.login_container} source={require('./images/login_background.png')}>
+      <Text>{"\n"}{"\n"}{"\n"}</Text>
         <Image  source={require('./images/vsmc.png')}/>
+        <Text>{"\n"}{"\n"}{"\n"}</Text>
         <Image  source={require('./images/login_logo.png')}/>
+        <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
         <AuthorizationComponent redirect={this.props.navigation.navigate}/>
       </Image>
     );
@@ -157,7 +216,15 @@ class Login2Screen extends React.Component {
   render() {
     return (
       <Image style={styles.login_container} source={require('./images/login_background.png')}>
+        <Text>{"\n"}{"\n"}{"\n"}</Text>
         <Image  style={styles.error_logo} source={require('./images/error_image.png')}/>
+         <Text style={{
+          color: 'lightgrey',
+          fontSize: 25,
+          textAlign: 'center'
+        }}>
+          ERROR{"\n"}{"\n"}SORRY SOMETHING{"\n"}WENT WRONG!
+        </Text>
         <AuthorizationComponent redirect={this.props.navigation.navigate}/>
       </Image>
     );
@@ -172,8 +239,11 @@ class StepsScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
+        <Chart dataSetName={'stepsData'} />
         <Text>Steps</Text>
+        <StatisticButtons navigation={this.props.navigation}/>
+        <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -199,22 +269,27 @@ class CalScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
+        <Chart dataSetName={'stepsData'} />
         <Text>Calories</Text>
-        <Button
+         <RoundedButton 
           onPress={() => this.props.navigation.navigate('Crash')}
-          title="Crash application"
-        />
+          title='CRASH APPLICATION'
+          backgroundColor="red"
+          />
         <Button
           onPress={() => this.forceUpdateHandler()}
           title="Get data"
         />
         <Text>Props: {[1,2,3]}</Text>
         <Text>State: {JSON.stringify(this.state)}</Text>
+        <StatisticButtons navigation={this.props.navigation}/>
+        <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
   }
 }
+
 
 class DistanceScreen extends React.Component {
   static navigationOptions = {
@@ -224,8 +299,11 @@ class DistanceScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/
+        <Chart dataSetName={'stepsData'} />}
         <Text>Distance</Text>
+        <StatisticButtons navigation={this.props.navigation}/>
+        <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -239,9 +317,87 @@ class TimeScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
-        <Image  width="300" height="300" source={require('./images/graph.png')}/>
+        {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/
+        <Chart dataSetName={'stepsData'} />}
         <Text>Time</Text>
+        <StatisticButtons navigation={this.props.navigation}/>
+        <HomeButtons navigation={this.props.navigation}/>
       </View>
+    );
+  }
+}
+
+class StatisticButtons extends React.Component {
+  render() {
+    return (
+      <View style={styles.home_description}>
+        <View style={styles.home_description_cell}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Steps')}>
+            <View>
+              <Image style={styles.stat_cell_img} source={require('./images/stats_steps.png')}/>
+              <Text>Steps</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.home_description_cell}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Calories')}>
+            <View>
+              <Image style={styles.stat_cell_img} source={require('./images/stats_calories.png')}/>
+              <Text>Calories</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.home_description_cell}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Distance')}>
+            <View>
+              <Image style={styles.stat_cell_img} source={require('./images/stats_distance.png')}/>
+              <Text>Distance</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.home_description_cell}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Time')}>
+            <View>
+              <Image style={styles.stat_cell_img} source={require('./images/stats_time.png')}/>
+              <Text>Time</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </View>  
+    );
+  }
+}
+
+class HomeButtons extends React.Component {
+  render() {
+    return (
+    <View style={{
+          flexDirection: 'column',
+          justifyContent: 'flex-end',
+          alignItems: 'center',
+          backgroundColor: 'lightgrey',
+          height: 50
+        }}>  
+      <View style={styles.home_buttons}>
+       
+        <View style={styles.home_description_cell}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Home')}>
+            <View style={styles.home_description_cell}>
+              <Image style={styles.home_buttons_img} source={require('./images/main_home.png')}/>
+              <Text>Home</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={styles.home_description_cell}>
+          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Steps')}>
+            <View style={styles.home_description_cell}>
+              <Image style={styles.home_buttons_img} source={require('./images/main_stats.png')}/>
+              <Text>Statistics</Text>
+            </View>
+          </TouchableWithoutFeedback>
+        </View>
+      </View>  
+    </View>
     );
   }
 }
@@ -262,19 +418,25 @@ const StatisticRouter = TabNavigator({
 });
 
 const MobileCenterRouter = TabNavigator({
-    Home: { screen:  HomeScreen },
-    Statistic: { screen: StatisticRouter },
-    Crash: { screen: CrashScreen },
-    Login: { screen: LoginScreen },
     Login2: { screen: Login2Screen },
+    Login: { screen: LoginScreen },
+    Home: { screen:  HomeScreen },
+    Steps: { screen:  StepsScreen },
+    Calories: { screen: CalScreen },
+    Distance: { screen: DistanceScreen },
+    Time: { screen: TimeScreen },
+    Crash: { screen: CrashScreen },
   },
   {
     navigationOptions: {
-      tabBarVisible: true
+      tabBarVisible: false
     },
     tabBarPosition: 'bottom',
-    initialRouteName: 'Home',
-    headerMode : 'none'
+    initialRouteName: 'Login',
+    headerMode : 'none',
+    animationEnabled: true,
+    lazy: true,
+    swipeEnabled: true,
 });
 
 const styles = StyleSheet.create({
@@ -301,8 +463,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
   error_logo: {
-    width: 100,
-    height: 100
+    width: 150,
+    height: 150
   },
   home_description: {
     flex: 1,
@@ -319,6 +481,23 @@ const styles = StyleSheet.create({
   home_description_cell_img: {
     height: 40,
     width: 40
+  },
+  stat_cell_img: {
+  },
+  photo: {
+    width: 200,
+    height: 200
+  },
+  home_buttons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
+  home_buttons_cell: {},
+  home_buttons_img: {
+    width: 25,
+    height: 25
   }
 });
 

@@ -10,9 +10,11 @@ import {
 import RoundedButton from './roundedButton';
 import * as simpleAuthProviders from 'react-native-simple-auth';
 import PermissionService from './permissionService';
-
+import SelfAnalytics from './analytics';
+import SelfCrashes from './crashes';
 import * as CONST from './const';
 import DataProvider from './dataProvider';
+import * as LocalStorage from './storage';
 
 const configs = {
   facebook: {
@@ -39,17 +41,11 @@ class Login extends Component {
   render(){
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to MobileCenterAndroidDemo!
-        </Text>
-        
         <RoundedButton 
           onPress={this.onBtnPressed.bind(this,'facebook', configs['facebook'])}
           title='LOGIN VIA FACEBOOK'
           img={require('../images/login_facebook.png')}
-          backgroundColor="#3b5998"
-          />
-
+          backgroundColor="#3b5998"/>
         <RoundedButton 
           onPress={this.onBtnPressed.bind(this,'twitter', configs['twitter'])}
           title='LOGIN VIA TWITTER'
@@ -67,30 +63,38 @@ class Login extends Component {
     this.setState({
       loading: true
     });
+    
+    const analytics = new SelfAnalytics();
+    const crash = new SelfCrashes();
     simpleAuthProviders[provider](opts)
       .then((info) => {
+        //analytics.enable();
         //DoMethod(info)
         if(provider == 'facebook'){
             Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
-          console.log('!!!!');
-          console.log(info.user);
-          user = {
-            name: info.user.first_name + ' ' + info.user.last_name,
-            photoUrl: info.user.picture.data.url
-          };
-
-          
+            console.log('!!!!');
+            console.log(info.user);
+            user = {
+              name: info.user.first_name + ' ' + info.user.last_name,
+              photoUrl: info.user.picture.data.url
+            };
+            LocalStorage.Storage.set('user', user);
+            analytics.track('fb_login');
         } else if(provider == 'twitter'){
             Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
-          console.log('!!!!');
-          console.log(info.user);
-          user = {
-            name: info.user.name,
-            photoUrl: info.user.profile_image_url
-          };
+            console.log('!!!!');
+            console.log(info.user);
+            user = {
+              name: info.user.name,
+              photoUrl: info.user.profile_image_url
+            };
+            LocalStorage.Storage.set('user', user);
+            analytics.track('tw_login');
         }
-PermissionService.requestLocationPermission();
-//   DataProvider.getFitnessDataForFiveDays();
+
+        analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
+        PermissionService.requestLocationPermission();
+        //   DataProvider.getFitnessDataForFiveDays();
         redirection(CONST.HOME_SCREEN);  
       })
       .catch((error) => {
@@ -98,6 +102,7 @@ PermissionService.requestLocationPermission();
           'Authorize Error',
           error.message
         );
+       analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'false'});
        redirection(CONST.LOGIN2_SCREEN);
       });
   }
