@@ -74,7 +74,7 @@ class HomeScreen extends React.Component {
           fontSize: 100,
           fontWeight: 'bold'
         }}>
-          {steps}
+          {steps.toFixed()}
         </Text>
         <View style={styles.home_description}>
           <View style={styles.home_description_cell}>
