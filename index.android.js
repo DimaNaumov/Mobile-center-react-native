@@ -63,10 +63,10 @@ class HomeScreen extends React.Component {
       <View style={styles.home}>
         <Image  source={require('./images/vsmc.png')}/>
         <View style={styles.photo}>
-          <Image style={styles.photo} source={require('./images/photo.png')}/>
-           {/*<Image style={styles.photo} source={{uri: this.photo}}/>*/}
+          {/*<Image style={styles.photo} source={require('./images/photo.png')}/>*/}
+           <Image style={styles.photo} source={{uri: LocalStorage.Storage.get('user').photoUrl}}/>
         </View>
-        <Text>HI, {this.name}</Text>
+        <Text>HI, {LocalStorage.Storage.get('user').name}</Text>
         <Text> </Text>
         <Text>TODAY'S STEPS:</Text>
         <Text style={{
@@ -278,8 +278,8 @@ class CalScreen extends React.Component {
           onPress={() => this.forceUpdateHandler()}
           title="Get data"
         />*/}
-        <Text>Props: {[1,2,3]}</Text>
-        <Text>State: {JSON.stringify(this.state)}</Text>
+        {/*<Text>Props: {[1,2,3]}</Text>
+        <Text>State: {JSON.stringify(this.state)}</Text>*/}
         <StatisticButtons navigation={this.props.navigation}/>
         <RoundedButton 
           onPress={() => (new SelfCrashes).crash()}
