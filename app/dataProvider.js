@@ -55,7 +55,7 @@ class DataProvider {
       return currDayData;
     }
     else {
-      return {}
+      return;
     }
   }
 }
