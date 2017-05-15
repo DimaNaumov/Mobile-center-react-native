@@ -44,8 +44,8 @@ class HomeScreen extends React.Component {
     let steps = 9999;
     let calories = 999;
     let distance = 9.9;
-    let activetimeHours = 9;
-    let activetimeMins = 99;
+    let activetimeHours = 5;
+    let activetimeMins = 55;
     if(dataSet !== undefined){
         steps = dataSet.steps;
         calories = dataSet.calories;
@@ -102,7 +102,7 @@ class HomeScreen extends React.Component {
                 fontSize: 40,
                 textAlignVertical: 'bottom'
               }}>
-                {distance}
+                {distance.toFixed()}
                 <Text style={{   
                   fontSize: 16,
                   color: 'gray',
@@ -121,11 +121,11 @@ class HomeScreen extends React.Component {
                 color: 'limegreen',
                 fontSize: 40,
               }}>
-              {activetimeHours}
+              {activetimeHours.toFixed()}
               <Text style={{fontSize: 16, color: 'gray'}}>
                 h
               </Text>
-              {activetimeMins}
+              {activetimeMins.toFixed()}
               <Text style={{fontSize: 16, color: 'gray'}}>
                 m
               </Text>
