@@ -94,7 +94,7 @@ class Login extends Component {
 
         analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
         PermissionService.requestLocationPermission();
-        //   DataProvider.getFitnessDataForFiveDays();
+        DataProvider.getFitnessDataForFiveDays();
         redirection(CONST.HOME_SCREEN);  
       })
       .catch((error) => {

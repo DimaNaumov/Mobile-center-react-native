@@ -77,7 +77,7 @@ export class SelfAnalytics extends Component {
 
     }
 
-    track(key, prop){
+    track(key, prop, callback){
         config = this.eventConfigs[key];
         if (config === undefined) {
             console.log('Unexpected key!');
@@ -88,6 +88,9 @@ export class SelfAnalytics extends Component {
         .then((info) => {
             console.log('Analytics sent');
             console.log(info);
+            if (callback && typeof callback === "function") {
+                callback();
+            }
         })
         .catch((err)=>{
             console.log('Analytics sending error');

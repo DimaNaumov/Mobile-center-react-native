@@ -18,6 +18,8 @@ import DataProvider from './app/dataProvider';
 import * as LocalStorage from './app/storage';
 import Chart from './app/chart'
 import RoundedButton from './app/roundedButton';
+import SelfAnalytics from './app/analytics';
+import SelfCrashes from './app/crashes';
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -265,6 +267,12 @@ class CalScreen extends React.Component {
        data: DataProvider.getFitnessDataForFiveDays()
     }));
   };
+
+  onCrashPress() {
+    const crash = new SelfCrashes();
+    crash.crash();
+  }
+
   render() {
     return (
      <View style={styles.container}>
@@ -273,7 +281,7 @@ class CalScreen extends React.Component {
         <Chart dataSetName={'stepsData'} />
         <Text>Calories</Text>
          <RoundedButton 
-          onPress={() => this.props.navigation.navigate('Crash')}
+          onPress={() => this.onCrashPress()}
           title='CRASH APPLICATION'
           backgroundColor="red"
           />
@@ -369,6 +377,13 @@ class StatisticButtons extends React.Component {
 }
 
 class HomeButtons extends React.Component {
+  
+  onStatPress() {
+    const analytics = new SelfAnalytics();
+    analytics.track('view_stats');
+    this.props.navigation.navigate('Steps');
+  }
+  
   render() {
     return (
     <View style={{
@@ -389,7 +404,7 @@ class HomeButtons extends React.Component {
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.home_description_cell}>
-          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Steps')}>
+          <TouchableWithoutFeedback onPress={() => this.onStatPress()}>
             <View style={styles.home_description_cell}>
               <Image style={styles.home_buttons_img} source={require('./images/main_stats.png')}/>
               <Text>Statistics</Text>
