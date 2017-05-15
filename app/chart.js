@@ -1,16 +1,109 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { 
-  AppRegistry, 
+import {
+  AppRegistry,
+  ActivityIndicator,
   View,
-  Text, 
-  StyleSheet} from 'react-native'
+  Text,
+  StyleSheet
+} from 'react-native'
 import { StockLine } from 'react-native-pathjs-charts'
 import moment from 'moment'
 import SvgUri from 'react-native-svg-uri';
 import { SmoothLine } from 'react-native-pathjs-charts'
 import * as LocalStorage from './storage';
+
+
+export default class Charts extends Component {
+
+  constructor(props) {
+    super(props)
+    this.updateState = this.updateState.bind(this);
+    LocalStorage.Storage.subscribe(this.updateState);
+    this.state = { loading: true };
+  }
+  updateState() {
+    this.setState(() => {
+      loading: !this.state.loading;
+    });
+  };
+  options = {
+    width: 350,
+    height: 250,
+    color: '#058bc4',
+    strokeWidth: '1.5',
+    margin: {
+      top: 10,
+      left: 35,
+      bottom: 30,
+      right: 10
+    },
+
+    animate: {
+      type: 'delayed',
+      duration: 200
+    },
+    axisX: {
+      showAxis: false,
+      showLines: false,
+      showLabels: true,
+      showTicks: false,
+      zeroAxis: false,
+      orient: 'bottom',
+      tickValues: [
+      ],
+      labelFunction: ((timestamp) => {
+        let date = new Date(timestamp);
+        return moment(timestamp).format('DD/MM');
+      }),
+      label: {
+        fontFamily: 'Arial',
+        fontSize: 10,
+        fontWeight: false,
+        fill: '#C0C0C0',
+      }
+    },
+    axisY: {
+      showAxis: false,
+      showLines: true,
+      showLabels: true,
+      showTicks: false,
+      zeroAxis: true,
+      orient: 'left',
+      tickValues: [
+      ],
+      label: {
+        fontFamily: 'Arial',
+        fontSize: 10,
+        fontWeight: false,
+        fill: '#C0C0C0',
+      }
+    }
+  }
+  render() {
+
+    let dataSet = LocalStorage.Storage.get('fitnessData');
+    if (dataSet != undefined && dataSet[this.props.dataSetName] != undefined) {
+      return (
+        <View style={styles.container}>
+          <StockLine data={dataSet[this.props.dataSetName]} options={this.options} xKey='date' yKey='value' />
+        </View>
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          <ActivityIndicator
+            animating={true}
+            style={[styles.centering, styles.gray, { height: 250 }]}
+            size="large"
+          />
+        </View>
+      )
+    }
+
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -20,121 +113,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
 });
-
-export default class Charts extends Component {
- 
-  constructor (props){
-    super(props)
-    this.updateState = this.updateState.bind(this);
-    LocalStorage.Storage.subscribe(this.updateState);
-    this.state = { loading: true };
-   //this.dataSetName = props.dataSetName;
-    // if(props.dataSetName !== undefined){
-    //   this.setState( {dataSetName: props.dataSetName});
-    // }
-    // if(props.data !== undefined){
-    //   this.data = props.data;
-    // }
-  }
-  updateState(){
-    //let temp = this.state.loading;
-    this.setState(()=>{
-      loading: !this.state.loading;
-    });
-    //let temp2 = this.state.loading;
-    //this.forceUpdate();
-  };
-  //dataSetName = 'stepsData'
-  //  data = [
-  //     // [{
-  //     //   "date": 0,
-  //     //   "value": 0
-  //     // }, {
-  //     //   "date": 1,
-  //     //   "value": 1000
-  //     // }, {
-  //     //   "date": 2,
-  //     //   "value": 1500
-  //     // }, {
-  //     //   "date": 3,
-  //     //   "value": 500
-  //     // }, {
-  //     //   "date": 4,
-  //     //   "value": 1000
-  //     // }]
-  //   ]
-   
-     options = {
-      width: 350,
-      height: 250,
-      color: '#058bc4',
-      strokeWidth: '1.5',
-      margin: {
-        top: 10,
-        left: 35,
-        bottom: 30,
-        right: 10
-      },
-      
-      animate: {
-        type: 'delayed',
-        duration: 200
-      },
-      axisX: {
-        showAxis: false,
-        showLines: false,
-        showLabels: true,
-        showTicks: false,
-        zeroAxis: false,
-        orient: 'bottom',
-        tickValues: [ 
-          // {value:'0'},
-          // {value:'1'},
-          // {value:'2'},
-          // {value:'3'},
-          // {value:'4'}
-          ],
-        labelFunction: ((timestamp) => {
-          //TODO: убрать текущий день
-          let date = new Date(timestamp);
-          return moment(timestamp).format('DD/MM');
-        }),
-        label: {
-          fontFamily: 'Arial',
-          fontSize: 10,
-          fontWeight: false,
-          fill: '#C0C0C0',
-        }
-      },
-      axisY: {
-        showAxis: false,
-        showLines: true,
-        showLabels: true,
-        showTicks: false,
-        zeroAxis: true,
-        orient: 'left',
-        // tickValues: [
-        // ],
-        label: {
-          fontFamily: 'Arial',
-          fontSize: 10,
-          fontWeight: false,
-          fill: '#C0C0C0',
-        }
-      }
-    }
-//прямо в data сделать привязку к shared dataStorage
-  render() {
-    return (
-      <View style={styles.container}>
-         <Text>
-          DAILY STATISTICS
-        </Text>
-        <StockLine data={LocalStorage.Storage.get(this.props.dataSetName)} options={this.options} xKey='date' yKey='value' />
-        {/*<StockLine data={LocalStorage.Storage.get(this.dataSetName)} options={this.options} xKey='date' yKey='value' />*/}
-        {/*<StockLine data={this.data} options={this.options} xKey='date' yKey='value' />*/}
-      </View>
-    )
-  }
-}
-//AppRegistry.registerComponent('Charts', () => Charts);
