@@ -18,59 +18,49 @@ import DataProvider from './app/dataProvider';
 import * as LocalStorage from './app/storage';
 import Chart from './app/chart'
 import RoundedButton from './app/roundedButton';
+import SelfAnalytics from './app/analytics';
+import SelfCrashes from './app/crashes';
+import moment from 'moment'
 
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
   };
-  stepsData = [
-          [{
-            "date": 0,
-            "value": 250
-          }, {
-            "date": 1,
-            "value": 1000
-          }, {
-            "date": 2,
-            "value": 1500
-          }, {
-            "date": 3,
-            "value": 500
-          }, {
-            "date": 4,
-            "value": 1000
-          }]
-        ];
-
-  onReDraw(el){
-    temp = LocalStorage.Storage.get('stepsData');
-    stepsData= [
-          [{
-            "date": 0,
-            "value": 0
-          }, {
-            "date": 1,
-            "value": 1000
-          }, {
-            "date": 2,
-            "value": 1500
-          }, {
-            "date": 3,
-            "value": 500
-          }, {
-            "date": 4,
-            "value": 2000
-          }]
-        ]
-    LocalStorage.Storage.set('stepsData', stepsData);
-    // this.state = {loading:false};
+  constructor(props) {
+    super(props)
+    this.updateState = this.updateState.bind(this);
+    LocalStorage.Storage.subscribe(this.updateState);
+    this.state = { loading: true };
+    // DataProvider.getFitnessDataForFiveDays();
+  }
+  updateState() {
+    this.setState(() => {
+      loading: !this.state.loading;
+    });
   };
-
   render() {
-    LocalStorage.Storage.set('stepsData', this.stepsData);
     let name = LocalStorage.Storage.get('user').name;
-    let photo = LocalStorage.Storage.get('user').photoUrl; 
+    let photo = LocalStorage.Storage.get('user').photoUrl;
+    let dataSet = DataProvider.getFitnessDataForOneDay();
+    let steps = 9999;
+    let calories = 999;
+    let distance = 9.9;
+    let activetimeHours = 9;
+    let activetimeMins = 99;
+    if(dataSet !== undefined){
+        steps = dataSet.steps;
+        calories = dataSet.calories;
+        distance = dataSet.distance;
+        let x = dataSet.activetime / 1000
+        seconds = x % 60
+        x /= 60
+        minutes = x % 60
+        x /= 60
+        hours = x % 24
+        activetimeHours = hours
+        activetimeMins = minutes;
+    }
     return (
       <View style={styles.home}>
         <Image  source={require('./images/vsmc.png')}/>
@@ -86,7 +76,7 @@ class HomeScreen extends React.Component {
           fontSize: 100,
           fontWeight: 'bold'
         }}>
-          10000
+          {steps}
         </Text>
         <View style={styles.home_description}>
           <View style={styles.home_description_cell}>
@@ -97,7 +87,7 @@ class HomeScreen extends React.Component {
                 color: 'orange',
                 fontSize: 40,
               }}>
-                500
+                {calories}
               </Text>
             </View>
           </View>
@@ -114,7 +104,7 @@ class HomeScreen extends React.Component {
                 fontSize: 40,
                 textAlignVertical: 'bottom'
               }}>
-                7.4
+                {distance}
                 <Text style={{   
                   fontSize: 16,
                   color: 'gray',
@@ -133,11 +123,11 @@ class HomeScreen extends React.Component {
                 color: 'limegreen',
                 fontSize: 40,
               }}>
-              1
+              {activetimeHours}
               <Text style={{fontSize: 16, color: 'gray'}}>
                 h
               </Text>
-              34
+              {activetimeMins}
               <Text style={{fontSize: 16, color: 'gray'}}>
                 m
               </Text>
@@ -241,7 +231,7 @@ class StepsScreen extends React.Component {
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
-        <Chart dataSetName={'stepsData'} />
+        <Chart dataSetName={'steps'} />
         <Text>Steps</Text>
         <StatisticButtons navigation={this.props.navigation}/>
         <HomeButtons navigation={this.props.navigation}/>
@@ -265,35 +255,43 @@ class CalScreen extends React.Component {
     this.setState((prevState, props) => ({
        data: [3,2,1]//DataProvider.getFitnessDataForFiveDays()
     }));
-    let stepsData= [
-          [{
-            "date": 0,
-            "value": 0
-          }, {
-            "date": 1,
-            "value": 1000
-          }, {
-            "date": 2,
-            "value": 1500
-          }, {
-            "date": 3,
-            "value": 500
-          }, {
-            "date": 4,
-            "value": 2000
-          }]
-        ]
-    LocalStorage.Storage.set('stepsData', stepsData);
+
+    // let fitnessData= {
+    //       'calories': [{
+    //         "date": 0,
+    //         "value": 0
+    //       }, {
+    //         "date": 1,
+    //         "value": 1000
+    //       }, {
+    //         "date": 2,
+    //         "value": 1500
+    //       }, {
+    //         "date": 3,
+    //         "value": 500
+    //       }, {
+    //         "date": 4,
+    //         "value": 2000
+    //       }]
+    // }
+    // LocalStorage.Storage.set('fitnessData', fitnessData);
+
   };
+
+  onCrashPress() {
+    const crash = new SelfCrashes();
+    crash.crash();
+  }
+
   render() {
     return (
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
-        <Chart dataSetName={'stepsData'} />
+        <Chart dataSetName={'calories'} />
         <Text>Calories</Text>
          <RoundedButton 
-          onPress={() => this.props.navigation.navigate('Crash')}
+          onPress={() => this.onCrashPress()}
           title='CRASH APPLICATION'
           backgroundColor="red"
           />
@@ -320,7 +318,7 @@ class DistanceScreen extends React.Component {
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/
-        <Chart dataSetName={'stepsData'} />}
+        <Chart dataSetName={'distance'} />}
         <Text>Distance</Text>
         <StatisticButtons navigation={this.props.navigation}/>
         <HomeButtons navigation={this.props.navigation}/>
@@ -338,7 +336,7 @@ class TimeScreen extends React.Component {
      <View style={styles.container}>
         <Text>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/
-        <Chart dataSetName={'stepsData'} />}
+        <Chart dataSetName={'activetime'} />}
         <Text>Time</Text>
         <StatisticButtons navigation={this.props.navigation}/>
         <HomeButtons navigation={this.props.navigation}/>
@@ -389,6 +387,13 @@ class StatisticButtons extends React.Component {
 }
 
 class HomeButtons extends React.Component {
+  
+  onStatPress() {
+    const analytics = new SelfAnalytics();
+    analytics.track('view_stats');
+    this.props.navigation.navigate('Steps');
+  }
+  
   render() {
     return (
     <View style={{
@@ -409,7 +414,7 @@ class HomeButtons extends React.Component {
           </TouchableWithoutFeedback>
         </View>
         <View style={styles.home_description_cell}>
-          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Steps')}>
+          <TouchableWithoutFeedback onPress={() => this.onStatPress()}>
             <View style={styles.home_description_cell}>
               <Image style={styles.home_buttons_img} source={require('./images/main_stats.png')}/>
               <Text>Statistics</Text>
