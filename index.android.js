@@ -7,10 +7,8 @@ import {
   Button,
   Image,
   TouchableWithoutFeedback,
-  TouchableOpacity 
 } from 'react-native';
-import { StackNavigator, TabNavigator, DrawerNavigator } from 'react-navigation';
-import SvgUri from 'react-native-svg-uri';
+import { TabNavigator } from 'react-navigation';
 
 import AuthorizationComponent from './app/auth';
 import * as CONST from './app/const';
@@ -136,26 +134,6 @@ class HomeScreen extends React.Component {
           </View>
         </View>
         <HomeButtons navigation={this.props.navigation}/>
-      </View>
-    );
-  }
-}
-
-class StatisticScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Statistic',
-  };
-  render() {
-    const { navigate } = this.props.navigation;
-    return (
-      <View  style={styles.container}>
-        <Text>Some Statistic</Text>
-        <StatisticRouter/>
-        <Button
-          //onPress={() => navigate('Crash')}
-          onPress={() => this.props.navigation.navigate('Crash')}
-          title="Crash application"
-        />
       </View>
     );
   }
@@ -426,21 +404,6 @@ class HomeButtons extends React.Component {
     );
   }
 }
-
-const StatisticRouter = TabNavigator({
-    Steps: { screen:  StepsScreen },
-    Calories: { screen: CalScreen },
-    Distance: { screen: DistanceScreen },
-    Time: { screen: TimeScreen },
-  }, 
-  {
-    navigationOptions: {
-      tabBarVisible: true
-    },
-    tabBarPosition: 'bottom',
-    initialRouteName: 'Steps',
-    headerMode : 'none'
-});
 
 const MobileCenterRouter = TabNavigator({
     Login2: { screen: Login2Screen },
