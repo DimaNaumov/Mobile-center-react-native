@@ -63,8 +63,8 @@ class HomeScreen extends React.Component {
       <View style={styles.home}>
         <Image  source={require('./images/vsmc.png')}/>
         <View style={styles.photo}>
-          {/*<Image style={styles.photo} source={require('./images/photo.png')}/>*/}
-           <Image style={styles.photo} source={{uri: LocalStorage.Storage.get('user').photoUrl}}/>
+            {/*<Image borderRadius={100} style={styles.photo} source={require('./images/photo.png')}/>*/}
+        <Image borderRadius={100} style={styles.photo} source={{uri: LocalStorage.Storage.get('user').photoUrl}}/>
         </View>
         <Text>HI, {LocalStorage.Storage.get('user').name}</Text>
         <Text> </Text>

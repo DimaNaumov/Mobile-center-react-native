@@ -15,18 +15,19 @@ export let Storage = (function () {
         }
 
         set(itemName, newVal) {
-            console.log('Past local store', store);
             store[itemName] = newVal;
-            console.log('New local store', store);
+            console.log('Local store updated:', store);
             this.dispatch();
         }
         
         get(itemName) {
             return store[itemName];
         }
-         dispatch(){
+
+        dispatch(){
             listeners.forEach(listener => listener());
         }
+        
         subscribe(listener){
             listeners.push(listener);
         }
