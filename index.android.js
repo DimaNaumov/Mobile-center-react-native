@@ -85,7 +85,7 @@ class HomeScreen extends React.Component {
                 color: 'orange',
                 fontSize: 40,
               }}>
-                {calories}
+                {calories.toFixed()}
               </Text>
             </View>
           </View>
@@ -212,6 +212,12 @@ class StepsScreen extends React.Component {
         <Chart dataSetName={'steps'} />
         <Text>Steps</Text>
         <StatisticButtons navigation={this.props.navigation}/>
+        <RoundedButton 
+          onPress={() => (new SelfCrashes).crash()}
+          title='CRASH APPLICATION'
+          backgroundColor="red"
+          style={styles.crash_btn}
+         />
         <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
@@ -256,10 +262,10 @@ class CalScreen extends React.Component {
 
   };
 
-  onCrashPress() {
-    const crash = new SelfCrashes();
-    crash.crash();
-  }
+  // onCrashPress() {
+  //   const crash = new SelfCrashes();
+  //   crash.crash();
+  // }
 
   render() {
     return (
@@ -268,18 +274,19 @@ class CalScreen extends React.Component {
         {/*<Image  width="300" height="300" source={require('./images/graph.png')}/>*/}
         <Chart dataSetName={'calories'} />
         <Text>Calories</Text>
-         <RoundedButton 
-          onPress={() => this.onCrashPress()}
-          title='CRASH APPLICATION'
-          backgroundColor="red"
-          />
-        <Button
+        {/*<Button
           onPress={() => this.forceUpdateHandler()}
           title="Get data"
-        />
+        />*/}
         <Text>Props: {[1,2,3]}</Text>
         <Text>State: {JSON.stringify(this.state)}</Text>
         <StatisticButtons navigation={this.props.navigation}/>
+        <RoundedButton 
+          onPress={() => (new SelfCrashes).crash()}
+          title='CRASH APPLICATION'
+          backgroundColor="red"
+          style={styles.crash_btn}
+         />
         <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
@@ -299,6 +306,12 @@ class DistanceScreen extends React.Component {
         <Chart dataSetName={'distance'} />}
         <Text>Distance</Text>
         <StatisticButtons navigation={this.props.navigation}/>
+        <RoundedButton 
+          onPress={() => (new SelfCrashes).crash()}
+          title='CRASH APPLICATION'
+          backgroundColor="red"
+          style={styles.crash_btn}
+         />
         <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
@@ -317,6 +330,12 @@ class TimeScreen extends React.Component {
         <Chart dataSetName={'activetime'} />}
         <Text>Time</Text>
         <StatisticButtons navigation={this.props.navigation}/>
+        <RoundedButton 
+          onPress={() => (new SelfCrashes).crash()}
+          title='CRASH APPLICATION'
+          backgroundColor="red"
+          style={styles.crash_btn}
+         />
         <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
@@ -486,6 +505,10 @@ const styles = StyleSheet.create({
   home_buttons_img: {
     width: 25,
     height: 25
+  },
+  crash_btn: {
+    margin: 20,
+    padding: 20
   }
 });
 

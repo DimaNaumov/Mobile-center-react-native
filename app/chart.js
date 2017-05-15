@@ -87,7 +87,7 @@ export default class Charts extends Component {
     if (dataSet != undefined && dataSet[this.props.dataSetName] != undefined) {
       return (
         <View style={styles.container}>
-          <StockLine data={dataSet[this.props.dataSetName]} options={this.options} xKey='date' yKey='value' />
+          <StockLine data={[dataSet[this.props.dataSetName]]} options={this.options} xKey='date' yKey='value' />
         </View>
       );
     } else {
