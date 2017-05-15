@@ -25,6 +25,9 @@ export default class Charts extends Component {
  
   constructor (props){
     super(props)
+    this.updateState = this.updateState.bind(this);
+    LocalStorage.Storage.subscribe(this.updateState);
+    this.state = { loading: true };
    //this.dataSetName = props.dataSetName;
     // if(props.dataSetName !== undefined){
     //   this.setState( {dataSetName: props.dataSetName});
@@ -33,6 +36,14 @@ export default class Charts extends Component {
     //   this.data = props.data;
     // }
   }
+  updateState(){
+    //let temp = this.state.loading;
+    this.setState(()=>{
+      loading: !this.state.loading;
+    });
+    //let temp2 = this.state.loading;
+    //this.forceUpdate();
+  };
   //dataSetName = 'stepsData'
   //  data = [
   //     // [{
