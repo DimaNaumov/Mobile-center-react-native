@@ -19,6 +19,7 @@ import * as LocalStorage from './app/storage';
 import Chart from './app/chart'
 import RoundedButton from './app/roundedButton';
 
+
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
@@ -262,8 +263,27 @@ class CalScreen extends React.Component {
   forceUpdateHandler(){
      console.log('State: ', this.state);
     this.setState((prevState, props) => ({
-       data: DataProvider.getFitnessDataForFiveDays()
+       data: [3,2,1]//DataProvider.getFitnessDataForFiveDays()
     }));
+    let stepsData= [
+          [{
+            "date": 0,
+            "value": 0
+          }, {
+            "date": 1,
+            "value": 1000
+          }, {
+            "date": 2,
+            "value": 1500
+          }, {
+            "date": 3,
+            "value": 500
+          }, {
+            "date": 4,
+            "value": 2000
+          }]
+        ]
+    LocalStorage.Storage.set('stepsData', stepsData);
   };
   render() {
     return (
