@@ -46,7 +46,7 @@ class DataProvider {
     } catch (e) {
         console.log(e);
         analytics.track('retrieve_data_result', {'API': Platform.OS === CONST.PLATFORM_ANDROID ? CONST.GOOGLE_FIT : CONST.HEALTH_KIT, 'Error message': JSON.stringify(e)});
-        existingData(undefined);
+        callback(undefined);
     }
   }
 
