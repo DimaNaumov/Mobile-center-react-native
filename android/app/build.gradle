@@ -108,18 +108,18 @@ android {
         release {
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-			signingConfig signingConfigs.release
-            //signingConfig getSigningConfig()
-            applicationVariants.all { variant ->
-                variant.outputs.each { output ->
-                    def project = "MobileCenterReactNative";
-                    def date = new Date();
-                    def formattedDate = date.format('dd-MM-yy--HH-mm-ss');
-                    def s = "_";
-                    def apkName = project + s + formattedDate + ".apk";
-                    output.outputFile = new File(output.outputFile.parent, apkName)
-                }
-            }
+			// signingConfig signingConfigs.release
+            // //signingConfig getSigningConfig()
+            // applicationVariants.all { variant ->
+            //     variant.outputs.each { output ->
+            //         def project = "MobileCenterReactNative";
+            //         def date = new Date();
+            //         def formattedDate = date.format('dd-MM-yy--HH-mm-ss');
+            //         def s = "_";
+            //         def apkName = project + s + formattedDate + ".apk";
+            //         output.outputFile = new File(output.outputFile.parent, apkName)
+            //     }
+            // }
         }
     }
     // applicationVariants are e.g. debug, release
