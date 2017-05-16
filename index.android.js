@@ -146,14 +146,16 @@ class CrashScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.error_logo} source={require('./images/error_image.png')}/>
-        <Text style={{
-          color: 'lightgrey',
-          fontSize: 25,
-          textAlign: 'center'
-        }}>
-          ERROR{"\n"}{"\n"}SORRY SOMETHING{"\n"}WENT WRONG!
-        </Text>
+        <View style={styles.error_container}>
+          <Image style={styles.error_logo} source={require('./images/error_image.png')}/>
+          <Text style={{
+            color: 'lightgrey',
+            fontSize: 25,
+            textAlign: 'center'
+          }}>
+            ERROR{"\n"}{"\n"}SORRY SOMETHING{"\n"}WENT WRONG!
+          </Text>
+        </View>
         <HomeButtons navigation={this.props.navigation}/>
       </View>
     );
@@ -452,6 +454,12 @@ const styles = StyleSheet.create({
     backgroundColor:'transparent',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  error_container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   login_container: {
     flex: 1,
