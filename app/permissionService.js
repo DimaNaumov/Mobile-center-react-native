@@ -5,7 +5,7 @@ class PermissionService {
     constructor() {
     }
 
-    requestLocationPermission() {
+    requestLocationPermission(onAllow, onErrorOrDenied) {
         if (Platform.OS == CONST.PLATFORM_ANDROID) {
             try {
                 if (Platform.Version >= 23) {
@@ -20,21 +20,26 @@ class PermissionService {
                             ).then(function (granted) {
                                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                                     console.log("Location access permission: ok")
+                                    onAllow();
                                 } else {
                                     console.log("Location access permission: denied")
+                                    onErrorOrDenied();
                                 }
                             }).catch(function(err) {
                                 console.log(err)
                             });
                         } else {
                             console.log("Location access permission: already was granted")
+                            onAllow();
                         }
                     }).catch(function(err) {
                         console.log(err);
+                        onErrorOrDenied();
                     })
                 }
             } catch (err) {
-                console.log(err)
+                console.log(err);
+                onErrorOrDenied();
             }
         }
     }
