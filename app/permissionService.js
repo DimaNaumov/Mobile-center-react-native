@@ -8,7 +8,7 @@ class PermissionService {
     requestLocationPermission(onAllow, onErrorOrDenied) {
         if (Platform.OS == CONST.PLATFORM_ANDROID) {
             try {
-                if (Platform.Version >= 23) {
+                //if (Platform.Version >= 23) {
                     PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then(function(wasAlreadyGranted) {
                         if (!wasAlreadyGranted) {
                             PermissionsAndroid.request(
@@ -26,7 +26,8 @@ class PermissionService {
                                     onErrorOrDenied();
                                 }
                             }).catch(function(err) {
-                                console.log(err)
+                                console.log(err);
+                                onErrorOrDenied();
                             });
                         } else {
                             console.log("Location access permission: already was granted")
@@ -36,7 +37,7 @@ class PermissionService {
                         console.log(err);
                         onErrorOrDenied();
                     })
-                }
+                //}
             } catch (err) {
                 console.log(err);
                 onErrorOrDenied();

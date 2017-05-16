@@ -13,7 +13,7 @@ class DataProvider {
     this.getFitnessDataForOneDay = this.getFitnessDataForOneDay.bind(this);
   }
 
-  getFitnessDataForFiveDays() {
+  getFitnessDataForFiveDays(callback) {
     const analytics = new SelfAnalytics();
     try {
       if (LocalStorage.Storage.get('fitnessData') == undefined) {
@@ -32,18 +32,21 @@ class DataProvider {
                   LocalStorage.Storage.set('fitnessData', d);
                   console.log('Google Fit statistic: ', d);
                   analytics.track('retrieve_data_result', {'API': CONST.GOOGLE_FIT, 'Result': JSON.stringify(d)});
-                  return d;
+                  callback(d);
+                  //return d;
               });
           }
       }
       else {
         let existingData = LocalStorage.Storage.get('fitnessData');
         console.log('Google Fit statistic from globalStore: ', existingData);
-        return existingData;
+        callback(existingData);
+        //return existingData;
       }
     } catch (e) {
         console.log(e);
         analytics.track('retrieve_data_result', {'API': Platform.OS === CONST.PLATFORM_ANDROID ? CONST.GOOGLE_FIT : CONST.HEALTH_KIT, 'Error message': JSON.stringify(e)});
+        existingData(undefined);
     }
   }
 

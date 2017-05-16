@@ -91,11 +91,11 @@ class Login extends Component {
             LocalStorage.Storage.set('user', user);
             analytics.track('tw_login');
         }
-
         analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
         PermissionService.requestLocationPermission(function() {//onAllow
-          DataProvider.getFitnessDataForFiveDays();
-          redirection(CONST.HOME_SCREEN);
+          DataProvider.getFitnessDataForFiveDays(function(d) {
+            redirection(CONST.HOME_SCREEN);
+          });
         }, 
         function() {//onErrorOrDenied
           redirection(CONST.LOGIN2_SCREEN);
