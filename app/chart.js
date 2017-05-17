@@ -10,7 +10,6 @@ import {
 } from 'react-native'
 import { StockLine } from 'react-native-pathjs-charts'
 import moment from 'moment'
-import SvgUri from 'react-native-svg-uri';
 import { SmoothLine } from 'react-native-pathjs-charts'
 import * as LocalStorage from './storage';
 
