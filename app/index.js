@@ -49,15 +49,16 @@ class HomeScreen extends React.Component {
     if(dataSet !== undefined){
         steps = dataSet.steps;
         calories = dataSet.calories;
-        distance = dataSet.distance;
-        let x = dataSet.activetime / 1000
-        seconds = x % 60
-        x /= 60
-        minutes = x % 60
-        x /= 60
-        hours = x % 24
-        activetimeHours = hours
-        activetimeMins = minutes;
+        distance = dataSet.distance / CONST.METERS_IN_KM;
+        
+        let x = dataSet.activetime;//ms
+        x = parseInt(x / CONST.MS_IN_SECOND);//seconds
+        x = parseInt(x / CONST.SECONDS_IN_MINUTE);//minutes
+        var fullHours = parseInt(x / CONST.MINUTES_IN_HOUR);
+        var fullMinutes = x % CONST.MINUTES_IN_HOUR;
+
+        activetimeHours = fullHours
+        activetimeMins = fullMinutes;
     }
     return (
       <View style={styles.home}>
@@ -102,7 +103,7 @@ class HomeScreen extends React.Component {
                 fontSize: 40,
                 textAlignVertical: 'bottom'
               }}>
-                {distance.toFixed()}
+                {distance.toFixed(2)}
                 <Text style={{   
                   fontSize: 16,
                   color: 'gray',

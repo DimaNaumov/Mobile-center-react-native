@@ -82,7 +82,7 @@ class Login extends Component {
         //analytics.enable();
         //DoMethod(info)
         if(provider == 'facebook'){
-            Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
+            //Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
             console.log('!!!!');
             console.log(info.user);
             user = {
@@ -92,7 +92,7 @@ class Login extends Component {
             LocalStorage.Storage.set('user', user);
             analytics.track('fb_login');
         } else if(provider == 'twitter'){
-            Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
+            //Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
             console.log('!!!!');
             console.log(info.user);
             user = {

@@ -7,3 +7,8 @@ export const PLATFORM_ANDROID = 'android';
 
 export const HEALTH_KIT = 'Health kit';
 export const GOOGLE_FIT = 'Google fit';
+
+export const METERS_IN_KM = 1000;
+export const MS_IN_SECOND = 1000;
+export const SECONDS_IN_MINUTE = 60;
+export const MINUTES_IN_HOUR = 60;
