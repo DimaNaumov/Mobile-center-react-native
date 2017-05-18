@@ -74,14 +74,20 @@ class Login extends Component {
     this.setState({
       loading: true
     });
+    LocalStorage.Storage.set(CONST.AUTH_PROVIDER, provider);
+    LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, true);
     
     const analytics = new SelfAnalytics();
     const crash = new SelfCrashes();
+    var isProvider = false;
     simpleAuthProviders[provider](opts)
       .then((info) => {
         //analytics.enable();
-        //DoMethod(info)
-        if(provider == 'facebook'){
+        //DoMethod(info)        
+        if(provider == 'facebook' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'facebook') {
+            LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+            LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, true);
+            isProvider = true;
             //Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
             console.log('!!!!');
             console.log(info.user);
@@ -91,7 +97,10 @@ class Login extends Component {
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('fb_login');
-        } else if(provider == 'twitter'){
+        } else if(provider == 'twitter' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'twitter'){
+            LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+            LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, true);
+            isProvider = true;
             //Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
             console.log('!!!!');
             console.log(info.user);
@@ -102,23 +111,30 @@ class Login extends Component {
             LocalStorage.Storage.set('user', user);
             analytics.track('tw_login');
         }
-        analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
-        PermissionService.requestLocationPermission(function() {//onAllow
-          DataProvider.getFitnessDataForFiveDays(function(d) {
-            redirection(CONST.HOME_SCREEN);
+
+        if (isProvider) {
+          analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
+          PermissionService.requestLocationPermission(function() {//onAllow
+            DataProvider.getFitnessDataForFiveDays(function(d) {
+              LocalStorage.Storage.set(CONST.FIT_DATA_RECEIVED_ITEM, true);
+              redirection(CONST.HOME_SCREEN);
+            });
+          }, 
+          function() {//onErrorOrDenied
+            LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+            redirection(CONST.LOGIN2_SCREEN);
           });
-        }, 
-        function() {//onErrorOrDenied
-          redirection(CONST.LOGIN2_SCREEN);
-        });
+        }
       })
       .catch((error) => {
         Alert.alert(
           'Authorize Error',
           error.message
         );
-       analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'false'});
-       redirection(CONST.LOGIN2_SCREEN);
+          analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'false'});
+          LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+          LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, false);
+          redirection(CONST.LOGIN2_SCREEN);
       });
   }
 }

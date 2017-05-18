@@ -7,6 +7,9 @@ import {
   Button,
   Image,
   TouchableWithoutFeedback,
+  ActivityIndicator,
+  AppState,
+  Alert
 } from 'react-native';
 import { TabNavigator } from 'react-navigation';
 
@@ -164,19 +167,73 @@ class CrashScreen extends React.Component {
 }
 
 class LoginScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      spinnerStatus: false
+    };
+    LocalStorage.Storage.subscribe(() => {
+      if (!LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) && (LocalStorage.Storage.get(CONST.SOCIAL_AUTHORIZED_ITEM) != true || LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM) != undefined)) {
+        this.setState({spinnerStatus: false});
+      } 
+      if (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS)) {
+        this.setState({spinnerStatus: true});
+      }
+
+
+      /*if (LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM) || (!LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) && (LocalStorage.Storage.get(CONST.SOCIAL_AUTHORIZED_ITEM) != true)))  {
+        this.setState({spinnerStatus: false});
+      } else
+      if (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) || LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM)) {
+        this.setState({spinnerStatus: true});
+      }*/
+    });
+    this.onAppStateChange = this.onAppStateChange.bind(this);
+  }
+
   static navigationOptions = {
     title: 'Login',
   };
+
+  //if user presses back and do not authorize; to prevent spinner block Login screen
+  onAppStateChange = (appState) => {
+    if (appState == CONST.ACTIVE_APP_STATE) {
+      LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+    }
+  };
+  
+  componentDidMount() {
+    AppState.addEventListener('change', this.onAppStateChange);
+  }
+
+  componentWillUnmount() {
+    AppState.removeEventListener('change', this.onAppStateChange);
+  }
+
   render() {
     return (
-      <Image style={styles.login_container} source={require('../images/login_background.png')}>
-      <Text>{"\n"}{"\n"}{"\n"}</Text>
-        <Image  source={require('../images/vsmc.png')}/>
-        <Text>{"\n"}{"\n"}{"\n"}</Text>
-        <Image  source={require('../images/login_logo.png')}/>
-        <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
-        <AuthorizationComponent redirect={this.props.navigation.navigate}/>
-      </Image>
+      <View style={{flex: 1}}>
+        <View style={{flex: 1}}>
+          <Image style={styles.login_container} source={require('../images/login_background.png')}>
+          <Text>{"\n"}{"\n"}{"\n"}</Text>
+            <Image  source={require('../images/vsmc.png')}/>
+            <Text>{"\n"}{"\n"}{"\n"}</Text>
+            <Image  source={require('../images/login_logo.png')}/>
+            <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
+            <AuthorizationComponent  redirect={this.props.navigation.navigate}/>
+          </Image>
+        </View>
+
+        {this.state.spinnerStatus ? 
+        <View style={[styles.spinner]}>
+          <ActivityIndicator
+            animating={true}
+            size="large"
+            color="white"
+          />
+        </View>
+        : null}
+      </View>
     );
   }
 }
@@ -217,7 +274,10 @@ class StepsScreen extends React.Component {
         <StatisticButtons navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton 
-            onPress={() => (new SelfCrashes).crash()}
+            onPress={() => {
+              (new SelfCrashes).crash();
+              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+            }}
             title='CRASH APPLICATION'
             backgroundColor="red"
             style={styles.crash_btn}
@@ -287,8 +347,11 @@ class CalScreen extends React.Component {
         <Text>State: {JSON.stringify(this.state)}</Text>*/}
         <StatisticButtons navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
-          <RoundedButton 
-            onPress={() => (new SelfCrashes).crash()}
+          <RoundedButton
+            onPress={() => {
+              (new SelfCrashes).crash();
+              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+            }}
             title='CRASH APPLICATION'
             backgroundColor="red"
             style={styles.crash_btn}
@@ -315,7 +378,10 @@ class DistanceScreen extends React.Component {
         <StatisticButtons navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>   
           <RoundedButton 
-            onPress={() => (new SelfCrashes).crash()}
+            onPress={() => {
+              (new SelfCrashes).crash();
+              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+            }}
             title='CRASH APPLICATION'
             backgroundColor="red"
             style={styles.crash_btn}
@@ -340,8 +406,11 @@ class TimeScreen extends React.Component {
         <Text>Time</Text>
         <StatisticButtons navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
-          <RoundedButton 
-            onPress={() => (new SelfCrashes).crash()}
+          <RoundedButton
+            onPress={() => {
+              (new SelfCrashes).crash();
+              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+            }}
             title='CRASH APPLICATION'
             backgroundColor="red"
             style={styles.crash_btn}
@@ -536,6 +605,16 @@ const styles = StyleSheet.create({
   crash_btn: {
     margin: 20,
     padding: 20
+  },
+  spinner: {
+    flex: 1,
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'black',
+    opacity: 0.5,
+    width: '100%',
+    height: '100%'
   }
 });
 
