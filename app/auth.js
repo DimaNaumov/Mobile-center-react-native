@@ -29,7 +29,7 @@ const configs = {
         appId: 'RpQDj4XFdHRvHp4l3uOKkyDJq',
         appSecret: 'qqOILC0EPMvOFdsYXbE5zkgccU5Dsuo8P7PwcDR3cGoRLRm21c',
         callback: 'com.mobilecenter://authorize',
-        fields: ['email', 'name', 'profile_image_url']
+        fields: ['email', 'name', 'profile_image_url_https']
     }
 }
 
@@ -97,7 +97,7 @@ class Login extends Component {
             console.log(info.user);
             user = {
               name: info.user.name,
-              photoUrl: info.user.profile_image_url
+              photoUrl: info.user.profile_image_url_https
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('tw_login');
