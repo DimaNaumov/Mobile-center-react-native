@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  Linking,
 } from 'react-native';
 import RoundedButton from './roundedButton';
 import * as simpleAuthProviders from 'react-native-simple-auth';
@@ -18,9 +19,9 @@ import * as LocalStorage from './storage';
 
 const configs = {
   facebook: {
-        appId: '1945815635652325',
-        appSecret: 'f5638047a74faae2250f6436a065f26c',
-        callback: 'fb1945815635652325://authorize',
+        appId: '224490541383550',
+        appSecret: 'acd7d61bfa627b1d6f49821e570963b4',
+        callback: 'fb224490541383550://authorize',
         scope: 'user_friends',
         fields: ['email', 'first_name', 'last_name', 'picture']
     },
@@ -36,6 +37,16 @@ class Login extends Component {
 
   constructor(props){
     super(props);
+  }
+  componentDidMount() {
+    Linking.addEventListener('url', this._handleOpenURL);
+  }
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this._handleOpenURL);
+  }
+  _handleOpenURL(event) {
+    console.log(event.url);
+    //Alert.alert(event);
   }
 
   render(){
