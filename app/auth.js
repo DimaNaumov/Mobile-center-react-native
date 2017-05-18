@@ -5,7 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  Linking,
 } from 'react-native';
 import RoundedButton from './roundedButton';
 import * as simpleAuthProviders from 'react-native-simple-auth';
@@ -36,6 +37,16 @@ class Login extends Component {
 
   constructor(props){
     super(props);
+  }
+  componentDidMount() {
+    Linking.addEventListener('url', this._handleOpenURL);
+  }
+  componentWillUnmount() {
+    Linking.removeEventListener('url', this._handleOpenURL);
+  }
+  _handleOpenURL(event) {
+    console.log(event.url);
+    //Alert.alert(event);
   }
 
   render(){

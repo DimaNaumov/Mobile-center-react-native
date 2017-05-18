@@ -42,6 +42,8 @@ class PermissionService {
                 console.log(err);
                 onErrorOrDenied();
             }
+        } else if (Platform.OS == CONST.PLATFORM_IOS) {
+            onAllow();
         }
     }
 }

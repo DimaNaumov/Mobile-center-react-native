@@ -18,7 +18,7 @@ class DataProvider {
     try {
       if (LocalStorage.Storage.get('fitnessData') == undefined) {
           if (Platform.OS === CONST.PLATFORM_IOS) {
-
+              callback();
           } else 
           if (Platform.OS === CONST.PLATFORM_ANDROID) {
               //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
