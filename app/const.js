@@ -20,3 +20,5 @@ export const ACTIVE_APP_STATE = "active";
 export const SOCIAL_AUTHORIZED_ITEM = "socialAuthorized";
 export const APP_ACTIVE_ITEM = "appIsActive";
 export const FIT_DATA_RECEIVED_ITEM = "fitDataReceived";
+
+export const AUTH_PROVIDER = "authProvider";

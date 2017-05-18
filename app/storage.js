@@ -4,8 +4,8 @@ export let Storage = (function () {
                 name: '',
                 photoUrl: ''    
               },
-        socialAuthorized: undefined, 
-        fitDataReceived: false,
+        socialAuthorized: undefined,//[true, false, undefined]
+        fitDataReceived: undefined,//[true, false, undefined]
         authInProgress: false
     };
     const listeners = [];
