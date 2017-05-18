@@ -3,7 +3,10 @@ export let Storage = (function () {
         user: {
                 name: '',
                 photoUrl: ''    
-              }
+              },
+        socialAuthorized: undefined, 
+        fitDataReceived: false,
+        authInProgress: false
     };
     const listeners = [];
 	class StorageInner {

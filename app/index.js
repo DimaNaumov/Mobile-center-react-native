@@ -171,9 +171,17 @@ class LoginScreen extends React.Component {
     this.state = {
       spinnerStatus: false
     };
-    LocalStorage.Storage.subscribe(() => { this.setState({spinnerStatus: LocalStorage.Storage.get(CONST.SPINNER_STATUS_ITEM)}); });
+    LocalStorage.Storage.subscribe(() => {
+      if (LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM) || (!LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) && (LocalStorage.Storage.get(CONST.SOCIAL_AUTHORIZED_ITEM) != true)))  {
+        this.setState({spinnerStatus: false});
+      } else
+      if (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) || LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM)) {
+        this.setState({spinnerStatus: true});
+      }
+    });
     this.onAppStateChange = this.onAppStateChange.bind(this);
   }
+
   static navigationOptions = {
     title: 'Login',
   };
@@ -181,9 +189,7 @@ class LoginScreen extends React.Component {
   //if user presses back and do not authorize; to prevent spinner block Login screen
   onAppStateChange = (appState) => {
     if (appState == CONST.ACTIVE_APP_STATE) {
-      if (LocalStorage.Storage.get(CONST.SPINNER_STATUS_ITEM) == true && LocalStorage.Storage.get(CONST.LOGIN_STATUS_ITEM) == CONST.LOGIN_STATUS_UNDEFINED) {
-        LocalStorage.Storage.set(CONST.SPINNER_STATUS_ITEM, false);
-      }
+      LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
     }
   };
   

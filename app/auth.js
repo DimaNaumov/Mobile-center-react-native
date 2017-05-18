@@ -63,7 +63,7 @@ class Login extends Component {
     this.setState({
       loading: true
     });
-    LocalStorage.Storage.set(CONST.SPINNER_STATUS_ITEM, true);
+    LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, true);
     
     const analytics = new SelfAnalytics();
     const crash = new SelfCrashes();
@@ -71,7 +71,8 @@ class Login extends Component {
       .then((info) => {
         //analytics.enable();
         //DoMethod(info)
-        LocalStorage.Storage.set(CONST.LOGIN_STATUS_ITEM, CONST.LOGIN_STATUS_SUCCESS);
+        LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+        LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, true);
         if(provider == 'facebook'){
             //Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
             console.log('!!!!');
@@ -96,13 +97,12 @@ class Login extends Component {
         analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
         PermissionService.requestLocationPermission(function() {//onAllow
           DataProvider.getFitnessDataForFiveDays(function(d) {
-            LocalStorage.Storage.set(CONST.SPINNER_STATUS_ITEM, false);
+            LocalStorage.Storage.set(CONST.FIT_DATA_RECEIVED_ITEM, true);
             redirection(CONST.HOME_SCREEN);
           });
         }, 
         function() {//onErrorOrDenied
-          LocalStorage.Storage.set(CONST.SPINNER_STATUS_ITEM, false);
-          LocalStorage.Storage.set(CONST.LOGIN_STATUS_ITEM, CONST.LOGIN_STATUS_ERROR);
+          LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
           redirection(CONST.LOGIN2_SCREEN);
         });
       })
@@ -112,8 +112,8 @@ class Login extends Component {
           error.message
         );
        analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'false'});
-       LocalStorage.Storage.set(CONST.SPINNER_STATUS_ITEM, false);
-       LocalStorage.Storage.set(CONST.LOGIN_STATUS_ITEM, CONST.LOGIN_STATUS_ERROR);
+       LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+       LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, false);
        redirection(CONST.LOGIN2_SCREEN);
       });
   }
