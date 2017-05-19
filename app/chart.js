@@ -55,7 +55,7 @@ export default class Charts extends Component {
     },
     axisX: {
       showAxis: false,
-      showLines: true,
+      showLines: false,
       showLabels: true,
       showTicks: false,
       zeroAxis: false,
