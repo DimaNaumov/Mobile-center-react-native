@@ -512,7 +512,7 @@ export const MobileCenterRouter = TabNavigator({
     headerMode : 'none',
     animationEnabled: true,
     lazy: true,
-    swipeEnabled: true,
+    swipeEnabled: false,
     backBehavior: 'none'
 });
 
