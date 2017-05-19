@@ -92,7 +92,7 @@ class Login extends Component {
             console.log(info.user);
             user = {
               name: info.user.first_name + ' ' + info.user.last_name,
-              photoUrl: info.user.picture.data.url.replace("normal", "large")
+              photoUrl: "https://graph.facebook.com/" + info.user.id + "/picture?type=large"
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('fb_login');
