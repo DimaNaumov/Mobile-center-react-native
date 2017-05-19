@@ -92,7 +92,7 @@ class Login extends Component {
             console.log(info.user);
             user = {
               name: info.user.first_name + ' ' + info.user.last_name,
-              photoUrl: info.user.picture.data.url
+              photoUrl: info.user.picture.data.url.replace("normal", "large")
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('fb_login');
@@ -104,7 +104,7 @@ class Login extends Component {
             console.log(info.user);
             user = {
               name: info.user.name,
-              photoUrl: info.user.profile_image_url_https
+              photoUrl: info.user.profile_image_url_https.replace("normal", "400x400")
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('tw_login');
