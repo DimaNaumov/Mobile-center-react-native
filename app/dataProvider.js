@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 
 import GoogleFitService from './googleFitService'
+import AppleHealthKit from './healthKitService'
 
 import * as CONST from './const';
 import * as LocalStorage from './storage';
@@ -17,24 +18,45 @@ class DataProvider {
     const analytics = new SelfAnalytics();
     try {
       if (LocalStorage.Storage.get('fitnessData') == undefined) {
-          if (Platform.OS === CONST.PLATFORM_IOS) {
-              callback();
-          } else 
+        if (Platform.OS === CONST.PLATFORM_IOS) {
+          AppleHealthKit.isAvailable((err, available) => {
+            if (available) {
+              AppleHealthKit.initHealthKit((err, res) => {
+                if (err) {
+                  console.log(err);
+                  return;
+                }
+                AppleHealthKit.fetchDataForFiveDays((data) => {
+                  LocalStorage.Storage.set('fitnessData', data);
+                  console.log('Health Kit statistic: ', data);
+                  analytics.track('retrieve_data_result', { 'API': CONST.HEALTH_KIT, 'Result': JSON.stringify(data) });
+                  callback(data);
+                })
+              })
+            }
+          })
+          // AppleHealthKit.fetchDataForFiveDays(function (data) {
+          //   LocalStorage.Storage.set('fitnessData', data);
+          //   console.log('Health Kit statistic: ', data);
+          //   analytics.track('retrieve_data_result', { 'API': CONST.HEALTH_KIT, 'Result': JSON.stringify(data) });
+          //   callback(data);
+          // });
+        } else
           if (Platform.OS === CONST.PLATFORM_ANDROID) {
-              //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
-            
-              GoogleFitService.onAuthorize((res) => {
-                  console.log(res);
-              });
-              GoogleFitService.authorize();
-            
-              GoogleFitService.getFiveDaysData(function(d) {
-                  LocalStorage.Storage.set('fitnessData', d);
-                  console.log('Google Fit statistic: ', d);
-                  analytics.track('retrieve_data_result', {'API': CONST.GOOGLE_FIT, 'Result': JSON.stringify(d)});
-                  callback(d);
-                  //return d;
-              });
+            //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
+
+            GoogleFitService.onAuthorize((res) => {
+              console.log(res);
+            });
+            GoogleFitService.authorize();
+
+            GoogleFitService.getFiveDaysData(function (d) {
+              LocalStorage.Storage.set('fitnessData', d);
+              console.log('Google Fit statistic: ', d);
+              analytics.track('retrieve_data_result', { 'API': CONST.GOOGLE_FIT, 'Result': JSON.stringify(d) });
+              callback(d);
+              //return d;
+            });
           }
       }
       else {
@@ -44,9 +66,9 @@ class DataProvider {
         //return existingData;
       }
     } catch (e) {
-        console.log(e);
-        analytics.track('retrieve_data_result', {'API': Platform.OS === CONST.PLATFORM_ANDROID ? CONST.GOOGLE_FIT : CONST.HEALTH_KIT, 'Error message': JSON.stringify(e)});
-        callback(undefined);
+      console.log(e);
+      analytics.track('retrieve_data_result', { 'API': Platform.OS === CONST.PLATFORM_ANDROID ? CONST.GOOGLE_FIT : CONST.HEALTH_KIT, 'Error message': JSON.stringify(e) });
+      callback(undefined);
     }
   }
 
