@@ -39,8 +39,8 @@ export default class RoundedButton extends Component {
                     }}>
                         <Image 
                             style={{
-                                width: 20,
-                                height: 20,
+                                width: 25,
+                                height: 25,
                                 resizeMode: 'contain'}}
                             source={this.props.img}></Image>
                     </View> 
