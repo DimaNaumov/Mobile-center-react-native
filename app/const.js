@@ -13,12 +13,7 @@ export const MS_IN_SECOND = 1000;
 export const SECONDS_IN_MINUTE = 60;
 export const MINUTES_IN_HOUR = 60;
 
-export const SPINNER_STATUS_ITEM = 'spinner';
 export const AUTH_IN_PROGRESS = 'authInProgress';
+export const GETTING_FIT_DATA_IN_PROGRESS = 'gettingFitDataProgress';
 export const ACTIVE_APP_STATE = "active";
-
-export const SOCIAL_AUTHORIZED_ITEM = "socialAuthorized";
-export const APP_ACTIVE_ITEM = "appIsActive";
-export const FIT_DATA_RECEIVED_ITEM = "fitDataReceived";
-
 export const AUTH_PROVIDER = "authProvider";

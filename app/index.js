@@ -65,12 +65,17 @@ class HomeScreen extends React.Component {
     }
     return (
       <View style={styles.home}>
-        <Image  source={require('../images/vsmc.png')}/>
+        <Image 
+          source={require('../images/home_background.png')}
+          style={styles.home_background}/>
+        <Image 
+          source={require('../images/vsmc.png')}
+          style={styles.home_vsmc_logo}/>
         <View style={styles.photo}>
             {/*<Image borderRadius={100} style={styles.photo} source={require('../images/photo.png')}/>*/}
-        <Image borderRadius={100} style={styles.photo} source={{uri: LocalStorage.Storage.get('user').photoUrl}}/>
+        <Image borderRadius={100} style={styles.photo_img} source={{uri: LocalStorage.Storage.get('user').photoUrl}}/>
         </View>
-        <Text>HI, {LocalStorage.Storage.get('user').name}</Text>
+        <Text>{"\n"}HI, {LocalStorage.Storage.get('user').name}</Text>
         <Text> </Text>
         <Text>TODAY'S STEPS:</Text>
         <Text style={{
@@ -80,7 +85,7 @@ class HomeScreen extends React.Component {
         }}>
           {steps.toFixed()}
         </Text>
-        <View style={styles.home_description}>
+        <View style={styles.home_current_day_stat}>
           <View style={styles.home_description_cell}>
             <View><Image style={styles.home_description_cell_img} source={require('../images/cal.png')}/></View>
             <View><Text>CALORIES</Text></View>
@@ -137,7 +142,7 @@ class HomeScreen extends React.Component {
             </View>
           </View>
         </View>
-        <HomeButtons navigation={this.props.navigation}/>
+        <HomeButtons activeBtn="home" navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -173,20 +178,7 @@ class LoginScreen extends React.Component {
       spinnerStatus: false
     };
     LocalStorage.Storage.subscribe(() => {
-      if (!LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) && (LocalStorage.Storage.get(CONST.SOCIAL_AUTHORIZED_ITEM) != true || LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM) != undefined)) {
-        this.setState({spinnerStatus: false});
-      } 
-      if (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS)) {
-        this.setState({spinnerStatus: true});
-      }
-
-
-      /*if (LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM) || (!LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) && (LocalStorage.Storage.get(CONST.SOCIAL_AUTHORIZED_ITEM) != true)))  {
-        this.setState({spinnerStatus: false});
-      } else
-      if (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) || LocalStorage.Storage.get(CONST.FIT_DATA_RECEIVED_ITEM)) {
-        this.setState({spinnerStatus: true});
-      }*/
+      this.setState({spinnerStatus: (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) || LocalStorage.Storage.get(CONST.GETTING_FIT_DATA_IN_PROGRESS)) });
     });
     this.onAppStateChange = this.onAppStateChange.bind(this);
   }
@@ -198,7 +190,9 @@ class LoginScreen extends React.Component {
   //if user presses back and do not authorize; to prevent spinner block Login screen
   onAppStateChange = (appState) => {
     if (appState == CONST.ACTIVE_APP_STATE) {
-      LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+      setTimeout(function() {
+        LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+      }, 2000)
     }
   };
   
@@ -215,12 +209,16 @@ class LoginScreen extends React.Component {
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
           <Image style={styles.login_container} source={require('../images/login_background.png')}>
+          <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
+          <Image 
+            source={require('../images/vsmc.png')}
+            style={styles.vsmc_logo}/>
           <Text>{"\n"}{"\n"}{"\n"}</Text>
-            <Image  source={require('../images/vsmc.png')}/>
-            <Text>{"\n"}{"\n"}{"\n"}</Text>
-            <Image  source={require('../images/login_logo.png')}/>
-            <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
-            <AuthorizationComponent  redirect={this.props.navigation.navigate}/>
+          <Image 
+            source={require('../images/login_logo.png')}
+            style={styles.login_logo}/>
+          <Text>{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}{"\n"}</Text>
+          <AuthorizationComponent  redirect={this.props.navigation.navigate}/>
           </Image>
         </View>
 
@@ -267,11 +265,10 @@ class StepsScreen extends React.Component {
   render() {
     return (
      <View style={styles.container}>
-        <Text>DAILY STATISTICS</Text>
+        <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/}
         <Chart dataSetName={'steps'} />
-        <Text>Steps</Text>
-        <StatisticButtons navigation={this.props.navigation}/>
+        <StatisticButtons activeBtn="steps" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton 
             onPress={() => {
@@ -283,7 +280,7 @@ class StepsScreen extends React.Component {
             style={styles.crash_btn}
           />
         </View>
-        <HomeButtons navigation={this.props.navigation}/>
+        <HomeButtons activeBtn="stat" navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -335,17 +332,16 @@ class CalScreen extends React.Component {
   render() {
     return (
      <View style={styles.container}>
-        <Text>DAILY STATISTICS</Text>
+        <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/}
         <Chart dataSetName={'calories'} />
-        <Text>Calories</Text>
         {/*<Button
           onPress={() => this.forceUpdateHandler()}
           title="Get data"
         />*/}
         {/*<Text>Props: {[1,2,3]}</Text>
         <Text>State: {JSON.stringify(this.state)}</Text>*/}
-        <StatisticButtons navigation={this.props.navigation}/>
+        <StatisticButtons activeBtn="calories" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
             onPress={() => {
@@ -357,7 +353,7 @@ class CalScreen extends React.Component {
             style={styles.crash_btn}
           />
          </View>
-        <HomeButtons navigation={this.props.navigation}/>
+        <HomeButtons activeBtn="stat" navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -371,11 +367,10 @@ class DistanceScreen extends React.Component {
   render() {
     return (
      <View style={styles.container}>
-        <Text>DAILY STATISTICS</Text>
+        <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
         <Chart dataSetName={'distance'} />}
-        <Text>Distance</Text>
-        <StatisticButtons navigation={this.props.navigation}/>
+        <StatisticButtons activeBtn="distance" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>   
           <RoundedButton 
             onPress={() => {
@@ -387,7 +382,7 @@ class DistanceScreen extends React.Component {
             style={styles.crash_btn}
           />
         </View>
-        <HomeButtons navigation={this.props.navigation}/>
+        <HomeButtons activeBtn="stat" navigation={this.props.navigation}/>
       </View>
     );
   }
@@ -400,11 +395,10 @@ class TimeScreen extends React.Component {
   render() {
     return (
      <View style={styles.container}>
-        <Text>DAILY STATISTICS</Text>
+        <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
         <Chart dataSetName={'activetime'} />}
-        <Text>Time</Text>
-        <StatisticButtons navigation={this.props.navigation}/>
+        <StatisticButtons activeBtn="time" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
             onPress={() => {
@@ -416,19 +410,23 @@ class TimeScreen extends React.Component {
             style={styles.crash_btn}
           />
         </View>
-        <HomeButtons navigation={this.props.navigation}/>
+        <HomeButtons activeBtn="stat" navigation={this.props.navigation}/>
       </View>
     );
   }
 }
 
 class StatisticButtons extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  
   render() {
     return (
       <View style={styles.home_description}>
         <View style={styles.home_description_cell}>
           <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Steps')}>
-            <View>
+            <View style={[styles.stat_cell_img_container, this.props.activeBtn == "steps" ? styles.active_btn : null ]}>
               <Image style={styles.stat_cell_img} source={require('../images/stats_steps.png')}/>
               <Text>Steps</Text>
             </View>
@@ -436,7 +434,7 @@ class StatisticButtons extends React.Component {
         </View>
         <View style={styles.home_description_cell}>
           <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Calories')}>
-            <View>
+            <View style={[styles.stat_cell_img_container, this.props.activeBtn == "calories" ? styles.active_btn : null ]}>
               <Image style={styles.stat_cell_img} source={require('../images/stats_calories.png')}/>
               <Text>Calories</Text>
             </View>
@@ -444,7 +442,7 @@ class StatisticButtons extends React.Component {
         </View>
         <View style={styles.home_description_cell}>
           <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Distance')}>
-            <View>
+            <View style={[styles.stat_cell_img_container, this.props.activeBtn == "distance" ? styles.active_btn : null ]}>
               <Image style={styles.stat_cell_img} source={require('../images/stats_distance.png')}/>
               <Text>Distance</Text>
             </View>
@@ -452,7 +450,7 @@ class StatisticButtons extends React.Component {
         </View>
         <View style={styles.home_description_cell}>
           <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Time')}>
-            <View>
+            <View style={[styles.stat_cell_img_container, this.props.activeBtn == "time" ? styles.active_btn : null ]}> 
               <Image style={styles.stat_cell_img} source={require('../images/stats_time.png')}/>
               <Text>Time</Text>
             </View>
@@ -477,27 +475,25 @@ class HomeButtons extends React.Component {
           flexDirection: 'column',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          backgroundColor: 'lightgrey',
           height: 50
         }}>  
       <View style={styles.home_buttons}>
-       
-        <View style={styles.home_description_cell}>
-          <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Home')}>
-            <View style={styles.home_description_cell}>
+        <TouchableWithoutFeedback onPress={() => this.props.navigation.navigate('Home')}>
+          <View style={[styles.home_description_cell, (this.props.activeBtn == "home") ? styles.active_home_btn : null]}>
+            <View style={styles.home_btns_cell}>
               <Image style={styles.home_buttons_img} source={require('../images/main_home.png')}/>
-              <Text>Home</Text>
+              <Text>HOME</Text>
             </View>
-          </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.home_description_cell}>
-          <TouchableWithoutFeedback onPress={() => this.onStatPress()}>
-            <View style={styles.home_description_cell}>
+          </View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback onPress={() => this.onStatPress()}>
+          <View style={[styles.home_description_cell, (this.props.activeBtn == "stat") ? styles.active_home_btn : null]}>    
+            <View style={styles.home_btns_cell}>
               <Image style={styles.home_buttons_img} source={require('../images/main_stats.png')}/>
-              <Text>Statistics</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        </View>
+              <Text>STATISTICS</Text>
+            </View>       
+          </View>
+        </TouchableWithoutFeedback>
       </View>  
     </View>
     );
@@ -523,13 +519,14 @@ export const MobileCenterRouter = TabNavigator({
     headerMode : 'none',
     animationEnabled: true,
     lazy: true,
-    swipeEnabled: true,
+    swipeEnabled: false,
+    backBehavior: 'none'
 });
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor:'transparent',
+    backgroundColor:'#ffffff',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -538,6 +535,26 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  vsmc_logo: {
+    height: 30,
+    resizeMode: 'contain'
+  },
+  home_vsmc_logo: {
+    marginTop: 40,
+    height: 30,
+    resizeMode: 'contain',
+    position: 'absolute'
+  },
+  login_logo: {
+    height: 100,
+    resizeMode: 'contain'
+  },
+  home_background: {
+    marginTop: -170,
+    height: 350,
+    resizeMode: 'contain',
+    position: 'absolute'
   },
   stats_controls_space: {
     flex: 1, 
@@ -564,16 +581,23 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
+    paddingTop: 110
   },
   error_logo: {
     width: 150,
     height: 150
   },
-  home_description: {
+  home_current_day_stat: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-around',
+    alignItems: 'center'
+  },
+  home_description: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     alignItems: 'center',
+    marginTop: 10
   },
   home_description_cell: {
     flex: 1,
@@ -581,26 +605,50 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
   },
+  home_btns_cell: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   home_description_cell_img: {
     height: 40,
-    width: 40
+    width: 40,
+    resizeMode: 'contain'
+  },
+  active_btn: {
+    backgroundColor: '#f4f4f4'
+  },
+  stat_cell_img_container: {
+    alignItems: 'center',
+    padding: 5
   },
   stat_cell_img: {
+    height: 40,
+    resizeMode: 'contain'
   },
   photo: {
-    width: 200,
-    height: 200
+    width: 100,
+    height: 100
+  },
+  photo_img: {
+    width: 100,
+    height: 100,
+    
+  },
+  active_home_btn: {
+    backgroundColor: "#d7d7d7"
   },
   home_buttons: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'flex-end',
+    backgroundColor: "#f4f4f4"
   },
   home_buttons_cell: {},
   home_buttons_img: {
-    width: 25,
-    height: 25
+    height: 20,
+    resizeMode: 'contain'
   },
   crash_btn: {
     margin: 20,

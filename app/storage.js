@@ -4,9 +4,8 @@ export let Storage = (function () {
                 name: '',
                 photoUrl: ''    
               },
-        socialAuthorized: undefined,//[true, false, undefined]
-        fitDataReceived: undefined,//[true, false, undefined]
-        authInProgress: false
+        authInProgress: false,
+        gettingFitDataProgress: false
     };
     const listeners = [];
 	class StorageInner {

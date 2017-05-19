@@ -86,27 +86,25 @@ class Login extends Component {
         //DoMethod(info)        
         if(provider == 'facebook' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'facebook') {
             LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
-            LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, true);
             isProvider = true;
             //Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
             console.log('!!!!');
             console.log(info.user);
             user = {
               name: info.user.first_name + ' ' + info.user.last_name,
-              photoUrl: info.user.picture.data.url
+              photoUrl: "https://graph.facebook.com/" + info.user.id + "/picture?type=large"
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('fb_login');
         } else if(provider == 'twitter' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'twitter'){
             LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
-            LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, true);
             isProvider = true;
             //Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
             console.log('!!!!');
             console.log(info.user);
             user = {
               name: info.user.name,
-              photoUrl: info.user.profile_image_url_https
+              photoUrl: info.user.profile_image_url_https.replace("normal", "400x400")
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('tw_login');
@@ -114,14 +112,15 @@ class Login extends Component {
 
         if (isProvider) {
           analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
+          LocalStorage.Storage.set(CONST.GETTING_FIT_DATA_IN_PROGRESS, true);
           PermissionService.requestLocationPermission(function() {//onAllow
             DataProvider.getFitnessDataForFiveDays(function(d) {
-              LocalStorage.Storage.set(CONST.FIT_DATA_RECEIVED_ITEM, true);
+              LocalStorage.Storage.set(CONST.GETTING_FIT_DATA_IN_PROGRESS, false);
               redirection(CONST.HOME_SCREEN);
             });
           }, 
           function() {//onErrorOrDenied
-            LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
+            LocalStorage.Storage.set(CONST.GETTING_FIT_DATA_IN_PROGRESS, false);
             redirection(CONST.LOGIN2_SCREEN);
           });
         }
@@ -133,7 +132,6 @@ class Login extends Component {
         );
           analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'false'});
           LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
-          LocalStorage.Storage.set(CONST.SOCIAL_AUTHORIZED_ITEM, false);
           redirection(CONST.LOGIN2_SCREEN);
       });
   }
