@@ -53,10 +53,10 @@ class HealthKitService {
                 this.getDailyAppleExerciseTimeSamples()
             ])
             .then((allData) => {
-                data.steps = this._getFourDaysFormated(allData[0]) || [];
-                data.calories = this._getFourDaysFormated(allData[1]) || [];
-                data.distance = this._getFourDaysFormated(allData[2]) || [];
-                data.activetime = this._getFourDaysFormated(allData[3]) || [];
+                data.steps = this._getFiveDaysFormated(allData[0]) || [];
+                data.calories = this._getFiveDaysFormated(allData[1]) || [];
+                data.distance = this._getFiveDaysFormated(allData[2]) || [];
+                data.activetime = this._getFiveDaysFormated(allData[3]) || [];
                 callback(data);
             }).catch((err) => {
                 console.log(err);
@@ -95,25 +95,27 @@ class HealthKitService {
     //     });
 
     // }
-    _getFourDaysFormated(data) {
+    _getFiveDaysFormated(data) {
         if (data == undefined) {
             return;
         }
         let result = [];
-        let fourDays = [
+        let fiveDays = [
+            moment().add(-4, 'days'),
             moment().add(-3, 'days'),
             moment().add(-2, 'days'),
             moment().add(-1, 'days'),
             moment() //today
         ]
-        for (let i in fourDays) {
+        for (let i in fiveDays) {
             let has = false;
             for (let j in data) {
                 let date = moment(data[j].startDate, 'YYYY-MM-DD');
-                if (fourDays[i].isSame(date, 'day')) {
+                if (fiveDays[i].isSame(date, 'day')) {
                     result.push(
                         {
-                            date: date.unix(),
+                            //date: date.format('X'),
+                            date: date.toDate().getTime(),
                             value: data[j].value
                         }
                     );
@@ -123,7 +125,8 @@ class HealthKitService {
             }
             if (!has) {
                 result.push({
-                    date: fourDays[i].unix(),
+                    //date: fourDays[i].unix(),
+                    date: fiveDays[i].toDate().getTime(),
                     value: 0
                 });
             }

@@ -11,7 +11,6 @@ import {
 } from 'react-native'
 import { StockLine } from 'react-native-pathjs-charts'
 import moment from 'moment'
-import { SmoothLine } from 'react-native-pathjs-charts'
 import * as LocalStorage from './storage';
 
 const {height, width} = Dimensions.get('window');
@@ -21,6 +20,7 @@ export default class Charts extends Component {
   constructor(props) {
     super(props)
     this.updateState = this.updateState.bind(this);
+    this.getData = this.getData.bind(this);
     LocalStorage.Storage.subscribe(this.updateState);
     this.state = { loading: true };
   }
@@ -30,6 +30,13 @@ export default class Charts extends Component {
     });
   };
   
+  getData = () => {
+    let dataSet = LocalStorage.Storage.get('fitnessData');
+    if (dataSet != undefined && dataSet[this.props.dataSetName] != undefined){
+      return dataSet[this.props.dataSetName];
+    }
+    return;
+  }
   options = {
     width: width - 65,
     height: height / 2.5,
@@ -48,15 +55,13 @@ export default class Charts extends Component {
     },
     axisX: {
       showAxis: false,
-      showLines: false,
+      showLines: true,
       showLabels: true,
       showTicks: false,
       zeroAxis: false,
       orient: 'bottom',
-      tickValues: [
-      ],
+      tickValues:[],
       labelFunction: ((timestamp) => {
-        let date = new Date(timestamp);
         return moment(timestamp).format('DD/MM');
       }),
       label: {
@@ -85,11 +90,11 @@ export default class Charts extends Component {
   }
   render() {
 
-    let dataSet = LocalStorage.Storage.get('fitnessData');
-    if (dataSet != undefined && dataSet[this.props.dataSetName] != undefined) {
+    let dataSet = this.getData();
+    if (dataSet != undefined) {
       return (
         <View style={styles.container}>
-          <StockLine data={[dataSet[this.props.dataSetName]]} options={this.options} xKey='date' yKey='value' />
+          <StockLine data={[dataSet]} options={this.options} xKey='date' yKey='value' />
         </View>
       );
     } else {
