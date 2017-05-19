@@ -4,6 +4,7 @@ import React, { Component } from 'react'
 import {
   AppRegistry,
   ActivityIndicator,
+  Dimensions,
   View,
   Text,
   StyleSheet
@@ -13,6 +14,7 @@ import moment from 'moment'
 import { SmoothLine } from 'react-native-pathjs-charts'
 import * as LocalStorage from './storage';
 
+const {height, width} = Dimensions.get('window');
 
 export default class Charts extends Component {
 
@@ -27,14 +29,15 @@ export default class Charts extends Component {
       loading: !this.state.loading;
     });
   };
+  
   options = {
-    width: 350,
-    height: 250,
+    width: width - 65,
+    height: height / 2.5,
     color: '#058bc4',
     strokeWidth: '1.5',
     margin: {
-      top: 10,
-      left: 35,
+      top: 30,
+      left: 50,
       bottom: 30,
       right: 10
     },
