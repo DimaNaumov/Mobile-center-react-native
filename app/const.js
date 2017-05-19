@@ -14,6 +14,6 @@ export const SECONDS_IN_MINUTE = 60;
 export const MINUTES_IN_HOUR = 60;
 
 export const AUTH_IN_PROGRESS = 'authInProgress';
-export const GETTING_FIT_DATA_IN_PROGRESS = 'authInProgress';
+export const GETTING_FIT_DATA_IN_PROGRESS = 'gettingFitDataProgress';
 export const ACTIVE_APP_STATE = "active";
 export const AUTH_PROVIDER = "authProvider";
