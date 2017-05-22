@@ -22,12 +22,14 @@ import RoundedButton from './roundedButton';
 import SelfAnalytics from './analytics';
 import SelfCrashes from './crashes';
 import moment from 'moment'
+import FontSizes from './fonts'
 
 
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
   };
+
   constructor(props) {
     super(props)
     this.updateState = this.updateState.bind(this);
@@ -80,7 +82,7 @@ class HomeScreen extends React.Component {
         <Text>TODAY'S STEPS:</Text>
         <Text style={{
           color: 'dodgerblue',
-          fontSize: 100,
+          fontSize: FontSizes.FONT_TODAY_STEPS_LABEL,
           fontWeight: 'bold'
         }}>
           {steps.toFixed()}
@@ -92,7 +94,7 @@ class HomeScreen extends React.Component {
             <View>
               <Text style={{
                 color: 'orange',
-                fontSize: 40,
+                fontSize: FontSizes.FONT_TODAY_LOWER_LABELS,
               }}>
                 {calories.toFixed()}
               </Text>
@@ -108,7 +110,7 @@ class HomeScreen extends React.Component {
               }}>
               <Text style={{
                 color: 'rebeccapurple',
-                fontSize: 40,
+                fontSize: FontSizes.FONT_TODAY_LOWER_LABELS,
                 textAlignVertical: 'bottom'
               }}>
                 {distance.toFixed(2)}
@@ -128,7 +130,7 @@ class HomeScreen extends React.Component {
               }}>
               <Text style={{
                 color: 'limegreen',
-                fontSize: 40,
+                fontSize: FontSizes.FONT_TODAY_LOWER_LABELS,
               }}>
               {activetimeHours.toFixed()}
               <Text style={{fontSize: 16, color: 'gray'}}>
