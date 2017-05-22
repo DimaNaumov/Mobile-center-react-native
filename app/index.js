@@ -334,7 +334,7 @@ class CalScreen extends React.Component {
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/}
-        <Chart dataSetName={'calories'} />
+        <Chart dataSetName={'calories'} axisYLabelFunc={(value)=>{ return value.toFixed()}}/>
         {/*<Button
           onPress={() => this.forceUpdateHandler()}
           title="Get data"
@@ -369,7 +369,7 @@ class DistanceScreen extends React.Component {
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
-        <Chart dataSetName={'distance'} />}
+        <Chart dataSetName={'distance'} axisYLabelFunc={(value)=>{return value.toFixed()}}/>}
         <StatisticButtons activeBtn="distance" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>   
           <RoundedButton 
@@ -397,7 +397,7 @@ class TimeScreen extends React.Component {
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
-        <Chart dataSetName={'activetime'} />}
+        <Chart dataSetName={'activetime'} axisYLabelFunc={(milliseconds)=>{ return milliseconds/CONST.MS_IN_SECOND/CONST.SECONDS_IN_MINUTE}}/>}
         <StatisticButtons activeBtn="time" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
