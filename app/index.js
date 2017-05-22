@@ -92,7 +92,7 @@ class HomeScreen extends React.Component {
             <View>
               <Text style={{
                 color: 'orange',
-                fontSize: 40,
+                fontSize: 32,
               }}>
                 {calories.toFixed()}
               </Text>
@@ -108,7 +108,7 @@ class HomeScreen extends React.Component {
               }}>
               <Text style={{
                 color: 'rebeccapurple',
-                fontSize: 40,
+                fontSize: 32,
                 textAlignVertical: 'bottom'
               }}>
                 {distance.toFixed(2)}
@@ -128,7 +128,7 @@ class HomeScreen extends React.Component {
               }}>
               <Text style={{
                 color: 'limegreen',
-                fontSize: 40,
+                fontSize: 32,
               }}>
               {activetimeHours.toFixed()}
               <Text style={{fontSize: 16, color: 'gray'}}>
