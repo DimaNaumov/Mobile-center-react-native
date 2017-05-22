@@ -11,12 +11,6 @@ const HKOPTIONS = {
         read: [
             HKPERMS.StepCount,
             HKPERMS.DistanceWalkingRunning,
-            HKPERMS.FlightsClimbed,
-            HKPERMS.Height,
-            HKPERMS.DateOfBirth,
-            HKPERMS.BiologicalSex,
-            HKPERMS.SleepAnalysis,
-            HKPERMS.DistanceWalkingRunning,
             HKPERMS.ActiveEnergyBurned,
             HKPERMS.AppleExerciseTime
         ],
