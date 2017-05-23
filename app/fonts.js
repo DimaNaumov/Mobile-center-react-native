@@ -3,7 +3,7 @@
 export default class FontSizes{
     static get FONT_TODAY_LOWER_LABELS(){
         if(PixelRatio.get() <=2){
-            return 25;
+            return 23;
         }
         return 32;
     }
