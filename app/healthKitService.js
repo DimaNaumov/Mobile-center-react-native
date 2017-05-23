@@ -31,14 +31,14 @@ class HealthKitService {
             loading: false,
         }
     }
-    isAvailable(callback){
+    isAvailable(callback) {
         AppleHealthKit.isAvailable(callback);
     }
-    initHealthKit(callback){
+    initHealthKit(callback) {
         AppleHealthKit.initHealthKit(HKOPTIONS, callback);
     }
-    fetchDataForFiveDays(callback){
-        var data = {};
+    fetchDataForFiveDays(callback) {
+        let data = {};
         Promise.all(
             [
                 this.getDailyStepCountSamples(),
@@ -56,50 +56,17 @@ class HealthKitService {
                 console.log(err);
             });
     }
-    // fetchDataForFiveDays(callback) {
-    //     AppleHealthKit.isAvailable((err, available) => {
-    //         if (available) {
-    //             AppleHealthKit.initHealthKit(HKOPTIONS, (err, res) => {
-    //                 if (err) {
-    //                     console.log(err);
-    //                     return;
-    //                 }
-    //                 var data = {};
-    //                 Promise.all(
-    //                     [
-    //                         this.getDailyStepCountSamples(),
-    //                         this.getDailyActiveEnergyBurnedSamples(),
-    //                         this.getDailyDistanceWalkingRunningSamples(),
-    //                         this.getDailyAppleExerciseTimeSamples()
-    //                     ])
-    //                     .then((allData) => {
-    //                         data.steps = this._getFourDaysFormated(allData[0]) || [];
-    //                         data.calories = this._getFourDaysFormated(allData[1]) || [];
-    //                         data.distance = this._getFourDaysFormated(allData[2]) || [];
-    //                         data.activetime = this._getFourDaysFormated(allData[3]) || [];
-    //                         callback(data);
-    //                     }).catch((err) => {
-    //                         console.log(err);
-    //                     });
-    //             });
-    //         }
-    //     });
-    //     this.setState((prevState, props) => {
-    //         loading: !this.state.loading;
-    //     });
-
-    // }
     _getFiveDaysFormated(data) {
         if (data == undefined) {
             return;
         }
         let result = [];
         let fiveDays = [
-            moment().add(-4, 'days'),
-            moment().add(-3, 'days'),
-            moment().add(-2, 'days'),
-            moment().add(-1, 'days'),
-            moment() //today
+            moment().startOf('day').add(-4, 'days'),
+            moment().startOf('day').add(-3, 'days'),
+            moment().startOf('day').add(-2, 'days'),
+            moment().startOf('day').add(-1, 'days'),
+            moment().startOf('day') //today
         ]
         for (let i in fiveDays) {
             let has = false;
@@ -108,8 +75,7 @@ class HealthKitService {
                 if (fiveDays[i].isSame(date, 'day')) {
                     result.push(
                         {
-                            //date: date.format('X'),
-                            date: date.toDate().getTime(),
+                            date: fiveDays[i].toDate().getTime(),
                             value: data[j].value
                         }
                     );
@@ -119,7 +85,6 @@ class HealthKitService {
             }
             if (!has) {
                 result.push({
-                    //date: fourDays[i].unix(),
                     date: fiveDays[i].toDate().getTime(),
                     value: 0
                 });
