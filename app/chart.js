@@ -21,9 +21,6 @@ export default class Charts extends Component {
     super(props)
     this.updateState = this.updateState.bind(this);
     this.getData = this.getData.bind(this);
-    if(this.props.axisYLabelFunc != undefined && typeof this.props.axisYLabelFunc == "function"){
-      this.axisYLabelFunc = this.props.axisYLabelFunc;
-    }
     LocalStorage.Storage.subscribe(this.updateState);
     this.state = { loading: true };
   }
@@ -40,9 +37,6 @@ export default class Charts extends Component {
     }
     return;
   }
-  axisYLabelFunc = (value) => {
-    return value;
-  }
   options = {
     width: width - 65,
     height: height / 2.5,
@@ -52,7 +46,7 @@ export default class Charts extends Component {
       top: 30,
       left: 50,
       bottom: 30,
-      right: 10
+      right: 30
     },
 
     animate: {
@@ -84,7 +78,7 @@ export default class Charts extends Component {
       showTicks: false,
       zeroAxis: true,
       orient: 'left',
-      labelFunction: this.axisYLabelFunc(),
+      labelFunction: this.props.axisYLabelFunc || undefined,
       tickValues: [
       ],
       label: {
