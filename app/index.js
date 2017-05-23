@@ -269,7 +269,7 @@ class StepsScreen extends React.Component {
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/}
-        <Chart dataSetName={'steps'} />
+        <Chart dataSetName={'steps'} axisYLabelFunc={(value)=>{ return value.toFixed()}} />
         <StatisticButtons activeBtn="steps" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton 
@@ -367,11 +367,12 @@ class DistanceScreen extends React.Component {
     title: 'Distance ',
   };
   render() {
+
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
-        <Chart dataSetName={'distance'} axisYLabelFunc={(value)=>{return value.toFixed()}}/>}
+        <Chart dataSetName={'distance'} axisYLabelFunc={(value)=>{ return value.toFixed()}} />}
         <StatisticButtons activeBtn="distance" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>   
           <RoundedButton 
@@ -399,7 +400,7 @@ class TimeScreen extends React.Component {
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
         {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
-        <Chart dataSetName={'activetime'} axisYLabelFunc={(milliseconds)=>{ return milliseconds/CONST.MS_IN_SECOND/CONST.SECONDS_IN_MINUTE}}/>}
+        <Chart dataSetName={'activetime'} axisYLabelFunc={(milliseconds)=>{ return (milliseconds/CONST.MS_IN_SECOND/CONST.SECONDS_IN_MINUTE).toFixed()}}/>}
         <StatisticButtons activeBtn="time" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
