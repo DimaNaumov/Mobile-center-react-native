@@ -32,7 +32,7 @@
             <action android:name="android.intent.action.VIEW" />
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
-            <data android:scheme="fb224490541383550" />
+            <data android:scheme="fb284473195346879" />
         </intent-filter>
         <intent-filter>
             <action android:name="android.intent.action.VIEW" />
@@ -42,9 +42,6 @@
         </intent-filter>
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-      <!--<meta-data 
-        android:name="com.facebook.sdk.ApplicationId" 
-        android:value="fb224490541383550"/>-->
     </application>
 
 </manifest>

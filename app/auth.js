@@ -19,9 +19,9 @@ import * as LocalStorage from './storage';
 
 const configs = {
   facebook: {
-        appId: '224490541383550',
-        appSecret: 'acd7d61bfa627b1d6f49821e570963b4',
-        callback: 'fb224490541383550://authorize',
+        appId: '284473195346879',
+        appSecret: 'afcb586c54bee8921b5d26698d4f08df',
+        callback: 'fb284473195346879://authorize',
         scope: 'user_friends',
         fields: ['email', 'first_name', 'last_name', 'picture']
     },
