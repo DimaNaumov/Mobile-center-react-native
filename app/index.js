@@ -619,6 +619,7 @@ const styles = StyleSheet.create({
     resizeMode: 'contain'
   },
   active_btn: {
+    borderRadius: 5,
     backgroundColor: '#f4f4f4'
   },
   stat_cell_img_container: {
