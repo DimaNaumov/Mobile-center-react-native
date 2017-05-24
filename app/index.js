@@ -97,6 +97,10 @@ class HomeScreen extends React.Component {
                 fontSize: FontSizes.FONT_TODAY_LOWER_LABELS,
               }}>
                 {calories.toFixed()}
+                <Text style={{   
+                  fontSize: 16,
+                  color: 'gray',
+                }}> Kcal</Text>
               </Text>
             </View>
           </View>
