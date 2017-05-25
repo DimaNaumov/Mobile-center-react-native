@@ -278,7 +278,7 @@ class StepsScreen extends React.Component {
           <RoundedButton 
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service', "Crashes API can only be used in debug builds and won't do anything in release builds.");
             }}
             title='CRASH APPLICATION'
             backgroundColor="red"
@@ -351,7 +351,7 @@ class CalScreen extends React.Component {
           <RoundedButton
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service', "Crashes API can only be used in debug builds and won't do anything in release builds.");
             }}
             title='CRASH APPLICATION'
             backgroundColor="red"
@@ -381,7 +381,7 @@ class DistanceScreen extends React.Component {
           <RoundedButton 
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service', "Crashes API can only be used in debug builds and won't do anything in release builds.");
             }}
             title='CRASH APPLICATION'
             backgroundColor="red"
@@ -409,7 +409,7 @@ class TimeScreen extends React.Component {
           <RoundedButton
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service', "Crashes API can only be used in debug builds and won't do anything in release builds.");
             }}
             title='CRASH APPLICATION'
             backgroundColor="red"
