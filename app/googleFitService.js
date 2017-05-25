@@ -15,8 +15,8 @@ class GoogleFitService {
     }
 
     currentDateString(days, hours, minutes) {
-        var currDate = new Date();
-        var dateString = new Date(currDate.getFullYear(), currDate.getMonth(), days, hours, minutes, 0, 0);
+        let currDate = new Date();
+        let dateString = new Date(currDate.getFullYear(), currDate.getMonth(), days, hours, minutes, 0, 0);
         return dateString.toISOString();
     }
 
@@ -92,8 +92,8 @@ class GoogleFitService {
     }
 
     getFiveDaysData(callback) {
-        var data = {};
-        var timeRange = this.currentFiveDaysRangeObj();
+        let data = {};
+        let timeRange = this.currentFiveDaysRangeObj();
         Promise.all([this.getAggregatedStepsByDays(timeRange), this.getAggregatedCaloriesByDays(timeRange), this.getAggregatedDistanceByDays(timeRange), this.getAggregatedActiveTimeByDays(timeRange)])
             .then(function(allData) {
                 data.steps = allData[0] || [];
@@ -105,8 +105,8 @@ class GoogleFitService {
     }
 
     getOneDayData(callback) {
-        var data = {};
-        var timeRange = this.currentOneDayRangeObj();
+        let data = {};
+        let timeRange = this.currentOneDayRangeObj();
         Promise.all([this.getAggregatedStepsByDays(timeRange), this.getAggregatedCaloriesByDays(timeRange), this.getAggregatedDistanceByDays(timeRange), this.getAggregatedActiveTimeByDays(timeRange)])
             .then(function(allData) {
                 data.steps = allData[0][0].value || 0;

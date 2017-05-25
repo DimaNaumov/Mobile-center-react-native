@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   Alert,
   StyleSheet,
   Text,
@@ -46,7 +45,6 @@ class Login extends Component {
   }
   _handleOpenURL(event) {
     console.log(event.url);
-    //Alert.alert(event);
   }
 
   render(){
@@ -81,15 +79,10 @@ class Login extends Component {
     const crash = new SelfCrashes();
     var isProvider = false;
     simpleAuthProviders[provider](opts)
-      .then((info) => {
-        //analytics.enable();
-        //DoMethod(info)        
+      .then((info) => { 
         if(provider == 'facebook' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'facebook') {
             LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
             isProvider = true;
-            //Alert.alert(provider, info.user.first_name + ' ' + info.user.last_name + '\n ' + info.user.picture.data.url);
-            console.log('!!!!');
-            console.log(info.user);
             user = {
               name: info.user.first_name + ' ' + info.user.last_name,
               photoUrl: "https://graph.facebook.com/" + info.user.id + "/picture?type=large"
@@ -99,9 +92,6 @@ class Login extends Component {
         } else if(provider == 'twitter' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'twitter'){
             LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
             isProvider = true;
-            //Alert.alert(provider, info.user.name + '\n ' + info.user.profile_image_url);
-            console.log('!!!!');
-            console.log(info.user);
             user = {
               name: info.user.name,
               photoUrl: info.user.profile_image_url_https.replace("normal", "400x400")

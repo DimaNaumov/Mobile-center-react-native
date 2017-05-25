@@ -83,6 +83,7 @@ export class SelfAnalytics extends Component {
             console.log('Unexpected key!');
             return;
         }
+        
         let properties = config.getProps.call(config, prop);
         Analytics.trackEvent(config.message, properties)
         .then((info) => {

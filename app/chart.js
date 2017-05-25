@@ -1,12 +1,9 @@
 'use strict'
-
 import React, { Component } from 'react'
 import {
-  AppRegistry,
   ActivityIndicator,
   Dimensions,
   View,
-  Text,
   StyleSheet
 } from 'react-native'
 import { StockLine } from 'react-native-pathjs-charts'
@@ -115,7 +112,6 @@ export default class Charts extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    //flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',

@@ -35,16 +35,9 @@ class DataProvider {
               })
             }
           })
-          // AppleHealthKit.fetchDataForFiveDays(function (data) {
-          //   LocalStorage.Storage.set('fitnessData', data);
-          //   console.log('Health Kit statistic: ', data);
-          //   analytics.track('retrieve_data_result', { 'API': CONST.HEALTH_KIT, 'Result': JSON.stringify(data) });
-          //   callback(data);
-          // });
+          
         } else
           if (Platform.OS === CONST.PLATFORM_ANDROID) {
-            //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
-
             GoogleFitService.onAuthorize((res) => {
               console.log(res);
             });
