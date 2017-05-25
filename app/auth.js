@@ -77,7 +77,7 @@ class Login extends Component {
     
     const analytics = new SelfAnalytics();
     const crash = new SelfCrashes();
-    var isProvider = false;
+    let isProvider = false;
     simpleAuthProviders[provider](opts)
       .then((info) => { 
         if(provider == 'facebook' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'facebook') {

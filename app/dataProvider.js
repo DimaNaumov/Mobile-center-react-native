@@ -67,8 +67,8 @@ class DataProvider {
 
   getFitnessDataForOneDay() {
     if (LocalStorage.Storage.get('fitnessData') != undefined) {
-      var allData = LocalStorage.Storage.get('fitnessData');
-      var currDayData = {};
+      let allData = LocalStorage.Storage.get('fitnessData');
+      let currDayData = {};
       currDayData.calories = allData['calories'][allData['calories'].length - 1].value;
       currDayData.steps = allData['steps'][allData['steps'].length - 1].value;
       currDayData.distance = allData['distance'][allData['distance'].length - 1].value;
