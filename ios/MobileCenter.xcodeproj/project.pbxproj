@@ -714,7 +714,7 @@
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
-						DevelopmentTeam = 3CLH74729C;
+						DevelopmentTeam = 285W24646W;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
@@ -1339,7 +1339,7 @@
 			baseConfigurationReference = 5136B5356C7C507C4DA282E9 /* Pods-MobileCenterTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
-				DEVELOPMENT_TEAM = 3CLH74729C;
+				DEVELOPMENT_TEAM = 285W24646W;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -1363,9 +1363,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MobileCenter.ReactNativeIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MobileCenter.app/MobileCenter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MobileCenterReactNative.app/MobileCenterReactNative";
 			};
 			name = Debug;
 		};
@@ -1375,7 +1375,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				DEVELOPMENT_TEAM = 3CLH74729C;
+				DEVELOPMENT_TEAM = 285W24646W;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)..\node_modules\neact-native-svgios/**",
@@ -1395,9 +1395,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.MobileCenter.ReactNativeIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MobileCenter.app/MobileCenter";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MobileCenterReactNative.app/MobileCenterReactNative";
 			};
 			name = Release;
 		};

@@ -335,7 +335,7 @@ class DistanceScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
-        <Chart dataSetName={'distance'} axisYLabelFunc={(value)=>{ return value.toFixed()}} />}
+        <Chart dataSetName={'distance'} axisYLabelFunc={(value)=>{ return value.toFixed()}} />
         <StatisticButtons activeBtn="distance" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>   
           <RoundedButton 
@@ -363,7 +363,7 @@ class TimeScreen extends React.Component {
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
-        <Chart dataSetName={'activetime'} axisYLabelFunc={(milliseconds)=>{ return (milliseconds/CONST.MS_IN_SECOND/CONST.SECONDS_IN_MINUTE).toFixed()}}/>}
+        <Chart dataSetName={'activetime'} axisYLabelFunc={(milliseconds)=>{ return (milliseconds/CONST.MS_IN_SECOND/CONST.SECONDS_IN_MINUTE).toFixed()}}/>
         <StatisticButtons activeBtn="time" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
