@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Text,
   View,
@@ -37,11 +36,13 @@ class HomeScreen extends React.Component {
     this.state = { loading: true };
     // DataProvider.getFitnessDataForFiveDays();
   }
+
   updateState() {
     this.setState(() => {
       loading: !this.state.loading;
     });
-  };
+  }
+
   render() {
     let name = LocalStorage.Storage.get('user').name;
     let photo = LocalStorage.Storage.get('user').photoUrl;
@@ -59,12 +60,13 @@ class HomeScreen extends React.Component {
         let x = dataSet.activetime;//ms
         x = parseInt(x / CONST.MS_IN_SECOND);//seconds
         x = parseInt(x / CONST.SECONDS_IN_MINUTE);//minutes
-        var fullHours = parseInt(x / CONST.MINUTES_IN_HOUR);
-        var fullMinutes = x % CONST.MINUTES_IN_HOUR;
+        let fullHours = parseInt(x / CONST.MINUTES_IN_HOUR);
+        let fullMinutes = x % CONST.MINUTES_IN_HOUR;
 
         activetimeHours = fullHours
         activetimeMins = fullMinutes;
     }
+
     return (
       <View style={styles.home}>
         <Image 
@@ -157,7 +159,8 @@ class HomeScreen extends React.Component {
 class CrashScreen extends React.Component {
   static navigationOptions = {
     title: 'Crash',
-  };
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -173,7 +176,7 @@ class CrashScreen extends React.Component {
         </View>
         <HomeButtons navigation={this.props.navigation}/>
       </View>
-    );
+    )
   }
 }
 
@@ -182,7 +185,8 @@ class LoginScreen extends React.Component {
     super();
     this.state = {
       spinnerStatus: false
-    };
+    }
+
     LocalStorage.Storage.subscribe(() => {
       this.setState({spinnerStatus: (LocalStorage.Storage.get(CONST.AUTH_IN_PROGRESS) || LocalStorage.Storage.get(CONST.GETTING_FIT_DATA_IN_PROGRESS)) });
     });
@@ -191,7 +195,7 @@ class LoginScreen extends React.Component {
 
   static navigationOptions = {
     title: 'Login',
-  };
+  }
 
   //if user presses back and do not authorize; to prevent spinner block Login screen
   onAppStateChange = (appState) => {
@@ -200,7 +204,7 @@ class LoginScreen extends React.Component {
         LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
       }, 2000)
     }
-  };
+  }
   
   componentDidMount() {
     AppState.addEventListener('change', this.onAppStateChange);
@@ -245,7 +249,8 @@ class LoginScreen extends React.Component {
 class Login2Screen extends React.Component {
   static navigationOptions = {
     title: 'Login2 ',
-  };
+  }
+
   render() {
     return (
       <Image style={styles.login_container} source={require('../images/login_background.png')}>
@@ -268,20 +273,20 @@ class StepsScreen extends React.Component {
   static navigationOptions = {
     title: 'Steps ',
   };
+
   render() {
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
-        {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/}
         <Chart dataSetName={'steps'} axisYLabelFunc={(value)=>{ return value.toFixed()}} />
         <StatisticButtons activeBtn="steps" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton 
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service');
             }}
-            title='CRASH APPLICATION'
+            title='SEND CRASH EVENT'
             backgroundColor="red"
             style={styles.crash_btn}
           />
@@ -296,65 +301,20 @@ class CalScreen extends React.Component {
   static navigationOptions = {
     title: 'Calories ',
   };
-  constructor(props){
-    super(props);
-    this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
-    this.state = { data:[1,2,3] };
-  };
-  
-  forceUpdateHandler(){
-     console.log('State: ', this.state);
-    this.setState((prevState, props) => ({
-       data: [3,2,1]//DataProvider.getFitnessDataForFiveDays()
-    }));
-
-    // let fitnessData= {
-    //       'calories': [{
-    //         "date": 0,
-    //         "value": 0
-    //       }, {
-    //         "date": 1,
-    //         "value": 1000
-    //       }, {
-    //         "date": 2,
-    //         "value": 1500
-    //       }, {
-    //         "date": 3,
-    //         "value": 500
-    //       }, {
-    //         "date": 4,
-    //         "value": 2000
-    //       }]
-    // }
-    // LocalStorage.Storage.set('fitnessData', fitnessData);
-
-  };
-
-  // onCrashPress() {
-  //   const crash = new SelfCrashes();
-  //   crash.crash();
-  // }
 
   render() {
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
-        {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/}
         <Chart dataSetName={'calories'} axisYLabelFunc={(value)=>{ return value.toFixed()}}/>
-        {/*<Button
-          onPress={() => this.forceUpdateHandler()}
-          title="Get data"
-        />*/}
-        {/*<Text>Props: {[1,2,3]}</Text>
-        <Text>State: {JSON.stringify(this.state)}</Text>*/}
         <StatisticButtons activeBtn="calories" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service');
             }}
-            title='CRASH APPLICATION'
+            title='SEND CRASH EVENT'
             backgroundColor="red"
             style={styles.crash_btn}
           />
@@ -370,21 +330,20 @@ class DistanceScreen extends React.Component {
   static navigationOptions = {
     title: 'Distance ',
   };
-  render() {
 
+  render() {
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
-        {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
         <Chart dataSetName={'distance'} axisYLabelFunc={(value)=>{ return value.toFixed()}} />}
         <StatisticButtons activeBtn="distance" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>   
           <RoundedButton 
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service');
             }}
-            title='CRASH APPLICATION'
+            title='SEND CRASH EVENT'
             backgroundColor="red"
             style={styles.crash_btn}
           />
@@ -399,20 +358,20 @@ class TimeScreen extends React.Component {
   static navigationOptions = {
     title: 'Time ',
   };
+  
   render() {
     return (
      <View style={styles.container}>
         <Text style={{marginTop: 20}}>DAILY STATISTICS</Text>
-        {/*<Image  width="300" height="300" source={require('../images/graph.png')}/>*/
         <Chart dataSetName={'activetime'} axisYLabelFunc={(milliseconds)=>{ return (milliseconds/CONST.MS_IN_SECOND/CONST.SECONDS_IN_MINUTE).toFixed()}}/>}
         <StatisticButtons activeBtn="time" navigation={this.props.navigation}/>
         <View style={styles.stats_controls_space}>
           <RoundedButton
             onPress={() => {
               (new SelfCrashes).crash();
-              Alert.alert('Crash was generated', "Crashes API can only be used in debug builds and won't do anything in release builds.");
+              Alert.alert('Crash was generated and sent to Mobile Center analytics service');
             }}
-            title='CRASH APPLICATION'
+            title='SEND CRASH EVENT'
             backgroundColor="red"
             style={styles.crash_btn}
           />
@@ -469,7 +428,6 @@ class StatisticButtons extends React.Component {
 }
 
 class HomeButtons extends React.Component {
-  
   onStatPress() {
     const analytics = new SelfAnalytics();
     analytics.track('view_stats');
@@ -673,5 +631,3 @@ const styles = StyleSheet.create({
     height: '100%'
   }
 });
-
-//AppRegistry.registerComponent('MobileCenter', () => MobileCenterRouter);

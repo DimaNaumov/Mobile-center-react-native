@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import {
-  StyleSheet,
   Text,
   View,
   TouchableWithoutFeedback,
-  Image,
-  Button
+  Image
 } from 'react-native';
 
 export default class RoundedButton extends Component {

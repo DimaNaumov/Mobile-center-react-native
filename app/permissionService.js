@@ -8,15 +8,10 @@ class PermissionService {
     requestLocationPermission(onAllow, onErrorOrDenied) {
         if (Platform.OS == CONST.PLATFORM_ANDROID) {
             try {
-                //if (Platform.Version >= 23) {
                     PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then(function(wasAlreadyGranted) {
                         if (!wasAlreadyGranted) {
                             PermissionsAndroid.request(
-                                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION/*,
-                                {
-                                    'title': 'Access Location Permission',
-                                    'message': 'Application needs access to your location.'
-                                }*/
+                                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
                             ).then(function (granted) {
                                 if (granted === PermissionsAndroid.RESULTS.GRANTED) {
                                     console.log("Location access permission: ok")
@@ -37,7 +32,6 @@ class PermissionService {
                         console.log(err);
                         onErrorOrDenied();
                     })
-                //}
             } catch (err) {
                 console.log(err);
                 onErrorOrDenied();

@@ -6,6 +6,7 @@ export class SelfCrashes extends Component {
     constructor(props) {
         super(props);
     }
+    
     crash(){
         const analytics = new SelfAnalytics();
         analytics.track('crash_app', "", function() {

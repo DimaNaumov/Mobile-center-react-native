@@ -35,16 +35,9 @@ class DataProvider {
               })
             }
           })
-          // AppleHealthKit.fetchDataForFiveDays(function (data) {
-          //   LocalStorage.Storage.set('fitnessData', data);
-          //   console.log('Health Kit statistic: ', data);
-          //   analytics.track('retrieve_data_result', { 'API': CONST.HEALTH_KIT, 'Result': JSON.stringify(data) });
-          //   callback(data);
-          // });
+          
         } else
           if (Platform.OS === CONST.PLATFORM_ANDROID) {
-            //TODO: MOVE AUTHORIZE TO LOGIN SCREEN
-
             GoogleFitService.onAuthorize((res) => {
               console.log(res);
             });
@@ -74,8 +67,8 @@ class DataProvider {
 
   getFitnessDataForOneDay() {
     if (LocalStorage.Storage.get('fitnessData') != undefined) {
-      var allData = LocalStorage.Storage.get('fitnessData');
-      var currDayData = {};
+      let allData = LocalStorage.Storage.get('fitnessData');
+      let currDayData = {};
       currDayData.calories = allData['calories'][allData['calories'].length - 1].value;
       currDayData.steps = allData['steps'][allData['steps'].length - 1].value;
       currDayData.distance = allData['distance'][allData['distance'].length - 1].value;

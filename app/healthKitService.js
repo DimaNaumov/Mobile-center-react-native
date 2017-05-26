@@ -1,7 +1,4 @@
 'use strict'
-import {
-    Alert
-} from 'react-native';
 import moment from 'moment'
 import AppleHealthKit from 'react-native-apple-healthkit-rn0.40';
 
@@ -31,12 +28,15 @@ class HealthKitService {
             loading: false,
         }
     }
+
     isAvailable(callback) {
         AppleHealthKit.isAvailable(callback);
     }
+
     initHealthKit(callback) {
         AppleHealthKit.initHealthKit(HKOPTIONS, callback);
     }
+
     fetchDataForFiveDays(callback) {
         let data = {};
         Promise.all(
@@ -56,6 +56,7 @@ class HealthKitService {
                 console.log(err);
             });
     }
+
     _getFiveDaysFormated(data) {
         if (data == undefined) {
             return;
@@ -92,10 +93,7 @@ class HealthKitService {
         }
         return result;
     }
-    //getDailyStepCountSamples
-    //getDailyActiveEnergyBurnedSamples
-    //getDailyAppleExerciseTimeSamples
-    //getDailyDistanceWalkingRunningSamples
+    
     getDailyStepCountSamples() {
         let options = {
             startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
@@ -109,6 +107,7 @@ class HealthKitService {
             });
         });
     }
+
     getDailyActiveEnergyBurnedSamples() {
         let options = {
             startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
@@ -122,6 +121,7 @@ class HealthKitService {
             });
         });
     }
+
     getDailyAppleExerciseTimeSamples() {
         let options = {
             startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
@@ -135,6 +135,7 @@ class HealthKitService {
             });
         });
     }
+    
     getDailyDistanceWalkingRunningSamples() {
         let options = {
             startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
