@@ -39,12 +39,15 @@ class HealthKitService {
 
     fetchDataForFiveDays(callback) {
         let data = {};
+        let options = {
+            startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
+        };
         Promise.all(
             [
-                this.getDailyStepCountSamples(),
-                this.getDailyActiveEnergyBurnedSamples(),
-                this.getDailyDistanceWalkingRunningSamples(),
-                this.getDailyAppleExerciseTimeSamples()
+                this.getDailyStepCountSamples(options),
+                this.getDailyActiveEnergyBurnedSamples(options),
+                this.getDailyDistanceWalkingRunningSamples(options),
+                this.getDailyAppleExerciseTimeSamples(options)
             ])
             .then((allData) => {
                 data.steps = this._getFiveDaysFormated(allData[0]) || [];
@@ -94,10 +97,7 @@ class HealthKitService {
         return result;
     }
     
-    getDailyStepCountSamples() {
-        let options = {
-            startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
-        };
+    getDailyStepCountSamples(options) {
         return new Promise(function (resolve, reject) {
             AppleHealthKit.getDailyStepCountSamples(options, (err, res) => {
                 if (err) {
@@ -108,10 +108,7 @@ class HealthKitService {
         });
     }
 
-    getDailyActiveEnergyBurnedSamples() {
-        let options = {
-            startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
-        };
+    getDailyActiveEnergyBurnedSamples(options) {
         return new Promise(function (resolve, reject) {
             AppleHealthKit.getDailyActiveEnergyBurnedSamples(options, (err, res) => {
                 if (err) {
@@ -122,10 +119,7 @@ class HealthKitService {
         });
     }
 
-    getDailyAppleExerciseTimeSamples() {
-        let options = {
-            startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
-        };
+    getDailyAppleExerciseTimeSamples(options) {
         return new Promise(function (resolve, reject) {
             AppleHealthKit.getDailyAppleExerciseTimeSamples(options, (err, res) => {
                 if (err) {
@@ -136,10 +130,7 @@ class HealthKitService {
         });
     }
     
-    getDailyDistanceWalkingRunningSamples() {
-        let options = {
-            startDate: (moment(new Date(), 'YYYY-MM-DD HH:mm').subtract(4, 'days')).toISOString(),
-        };
+    getDailyDistanceWalkingRunningSamples(options) {
         return new Promise(function (resolve, reject) {
             AppleHealthKit.getDailyDistanceWalkingRunningSamples(options, (err, res) => {
                 if (err) {
