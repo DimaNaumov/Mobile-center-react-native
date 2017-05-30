@@ -23,7 +23,7 @@ import SelfCrashes from './crashes';
 import moment from 'moment'
 import FontSizes from './fonts'
 
-
+//Home screen class with present day statistic from Goolge Fit or Health Kit service
 class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
@@ -156,6 +156,7 @@ class HomeScreen extends React.Component {
   }
 }
 
+//Crash screen, if something went wrong on receiving data from Goolge Fit or Health Kit service
 class CrashScreen extends React.Component {
   static navigationOptions = {
     title: 'Crash',
@@ -180,6 +181,7 @@ class CrashScreen extends React.Component {
   }
 }
 
+//Start screen with login buttons
 class LoginScreen extends React.Component {
   constructor() {
     super();
@@ -246,6 +248,7 @@ class LoginScreen extends React.Component {
   }
 }
 
+//Second ligin screen. User redirects here after errors on authorize with facebook or twitter
 class Login2Screen extends React.Component {
   static navigationOptions = {
     title: 'Login2 ',
@@ -269,6 +272,7 @@ class Login2Screen extends React.Component {
   }
 }
 
+//Statistic screen
 class StepsScreen extends React.Component {
   static navigationOptions = {
     title: 'Steps ',
@@ -297,6 +301,7 @@ class StepsScreen extends React.Component {
   }
 }
 
+//Statistic screen
 class CalScreen extends React.Component {
   static navigationOptions = {
     title: 'Calories ',
@@ -325,7 +330,7 @@ class CalScreen extends React.Component {
   }
 }
 
-
+//Statistic screen
 class DistanceScreen extends React.Component {
   static navigationOptions = {
     title: 'Distance ',
@@ -354,6 +359,7 @@ class DistanceScreen extends React.Component {
   }
 }
 
+//Statistic screen
 class TimeScreen extends React.Component {
   static navigationOptions = {
     title: 'Time ',
@@ -382,6 +388,7 @@ class TimeScreen extends React.Component {
   }
 }
 
+//Navigation buttons between statistic screens
 class StatisticButtons extends React.Component {
   constructor(props) {
     super(props)
@@ -427,6 +434,7 @@ class StatisticButtons extends React.Component {
   }
 }
 
+//Navigation buttons between home and statistic screen
 class HomeButtons extends React.Component {
   onStatPress() {
     const analytics = new SelfAnalytics();
@@ -465,6 +473,7 @@ class HomeButtons extends React.Component {
   }
 }
 
+//Main application component with react navigation router
 export const MobileCenterRouter = TabNavigator({
     Login2: { screen: Login2Screen },
     Login: { screen: LoginScreen },

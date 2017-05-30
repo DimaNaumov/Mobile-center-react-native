@@ -6,6 +6,7 @@ export class SelfAnalytics extends Component {
         super(props);
     }
 
+//Describing application events, which will be sent to Mobile Center
     eventConfigs = {
         'fb_login': {
             message: "Facebook login button clicked",
@@ -24,7 +25,6 @@ export class SelfAnalytics extends Component {
         'login_api_request_result': {
             message: "Trying to login in Facebook/Twitter.",
             defaultProps: { "Page": "Login", "Category": "Request", "API": "Social network" },
-            //defaultProps: { "Page": "Login", "Category": "Request", "API": "Social network", "Social network": "", "Result": "", "Error message": "" },
             getProps(prop) {
                 let resProps = this.defaultProps;
                 if (prop["Social network"] !== undefined) {
@@ -42,7 +42,6 @@ export class SelfAnalytics extends Component {
         'retrieve_data_result': {
             message: "Trying to retrieve data from HealthKit/Google Fit API.",
             defaultProps: {"Category": "Request"},
-            //defaultProps: { "Page": '', "Category": "Request", "API": '', "Result": '', "Error message": '' },
             getProps(prop) {
                 let resProps = this.defaultProps;
                 if (prop["Page"] !== undefined) {

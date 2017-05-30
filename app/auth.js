@@ -16,6 +16,7 @@ import * as CONST from './const';
 import DataProvider from './dataProvider';
 import * as LocalStorage from './storage';
 
+//Describing configs for facebook and twitter
 const configs = {
   facebook: {
         appId: '1799905973658378',
@@ -37,15 +38,15 @@ class Login extends Component {
   constructor(props){
     super(props);
   }
+
+  //This function needed to application correctly working in iOS build after auth in fb/twitter
   componentDidMount() {
     Linking.addEventListener('url', this._handleOpenURL);
   }
   componentWillUnmount() {
     Linking.removeEventListener('url', this._handleOpenURL);
   }
-  _handleOpenURL(event) {
-    console.log(event.url);
-  }
+  _handleOpenURL(event) {}
 
   render(){
     return (
@@ -80,7 +81,8 @@ class Login extends Component {
     let isProvider = false;
     simpleAuthProviders[provider](opts)
       .then((info) => { 
-        if(provider == 'facebook' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'facebook') {
+        //add user description to global store
+        if (provider == 'facebook' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'facebook'){
             LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
             isProvider = true;
             user = {
@@ -89,7 +91,7 @@ class Login extends Component {
             };
             LocalStorage.Storage.set('user', user);
             analytics.track('fb_login');
-        } else if(provider == 'twitter' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'twitter'){
+        } else if (provider == 'twitter' && LocalStorage.Storage.get(CONST.AUTH_PROVIDER) == 'twitter'){
             LocalStorage.Storage.set(CONST.AUTH_IN_PROGRESS, false);
             isProvider = true;
             user = {
@@ -100,6 +102,7 @@ class Login extends Component {
             analytics.track('tw_login');
         }
 
+        //send login event to Mobile Center
         if (isProvider) {
           analytics.track('login_api_request_result', {"Social network": provider, 'Result': 'true'});
           LocalStorage.Storage.set(CONST.GETTING_FIT_DATA_IN_PROGRESS, true);

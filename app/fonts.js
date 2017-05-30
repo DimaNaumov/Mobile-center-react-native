@@ -1,4 +1,6 @@
- import { PixelRatio } from 'react-native';
+import { PixelRatio } from 'react-native';
+
+//Set different sizes of fonts depending on phone screen resolution
 
 export default class FontSizes{
     static get FONT_TODAY_LOWER_LABELS(){

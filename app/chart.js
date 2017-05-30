@@ -10,6 +10,7 @@ import { StockLine } from 'react-native-pathjs-charts'
 import moment from 'moment'
 import * as LocalStorage from './storage';
 
+//Set different sizes of chart depending on phone screen size
 const {height, width} = Dimensions.get('window');
 
 export default class Charts extends Component {
@@ -21,11 +22,12 @@ export default class Charts extends Component {
     LocalStorage.Storage.subscribe(this.updateState);
     this.state = { loading: true };
   }
+
   updateState() {
     this.setState(() => {
       loading: !this.state.loading;
     });
-  };
+  }
   
   getData = () => {
     let dataSet = LocalStorage.Storage.get('fitnessData');
@@ -34,6 +36,7 @@ export default class Charts extends Component {
     }
     return;
   }
+
   options = {
     width: width - 65,
     height: height / 2.5,
@@ -86,8 +89,8 @@ export default class Charts extends Component {
       }
     }
   }
-  render() {
 
+  render() {
     let dataSet = this.getData();
     if (dataSet != undefined) {
       return (

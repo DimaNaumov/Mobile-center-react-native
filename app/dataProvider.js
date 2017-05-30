@@ -8,6 +8,7 @@ import * as CONST from './const';
 import * as LocalStorage from './storage';
 import SelfAnalytics from './analytics';
 
+//Middleware class between application and Google Fit / Health Kit services
 class DataProvider {
   constructor() {
     this.getFitnessDataForFiveDays = this.getFitnessDataForFiveDays.bind(this);
@@ -48,7 +49,6 @@ class DataProvider {
               console.log('Google Fit statistic: ', d);
               analytics.track('retrieve_data_result', { 'API': CONST.GOOGLE_FIT, 'Result': JSON.stringify(d) });
               callback(d);
-              //return d;
             });
           }
       }
@@ -56,7 +56,6 @@ class DataProvider {
         let existingData = LocalStorage.Storage.get('fitnessData');
         console.log('Google Fit statistic from globalStore: ', existingData);
         callback(existingData);
-        //return existingData;
       }
     } catch (e) {
       console.log(e);
