@@ -77,3 +77,13 @@ Your new Android OAuth 2.0 Client ID and secret appear in the list of IDs for yo
 ```
 
 For more information visit [Google developers](https://developers.google.com/fit/overview) site.
+
+### iOS platform
+
+NOTE! You will need macOS.
+
+Run app from command line using 
+1. npm install
+1. react-native run-ios
+
+If you have no react native environment on your computer, follow instructions from [React Native. Getting started](https://facebook.github.io/react-native/docs/getting-started.html)
